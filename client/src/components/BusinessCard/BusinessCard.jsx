@@ -24,7 +24,7 @@ const BusinessCard = ({ business, isFavorite, toggleFavorite }) => {
                     {business.contactPerson}
                 </p>
                 <p className={styles.businessCard__content__address}>{business.address}</p>
-                <Button size="medium" text="Book now" />
+                <Button size="medium" >Book now</Button>
             </div>
         </div>
     );

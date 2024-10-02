@@ -54,7 +54,7 @@ const Topbar = () => {
         {user ? (
             <UserAvatar username={user.username} onLogout={handleLogout} />
         ) : (
-            <Button size="large" text="Login / Sign Up" onClick={handleButtonClick} />
+            <Button size="large" onClick={handleButtonClick}>Login / Sign Up</Button>
         )}
       </div>
   );

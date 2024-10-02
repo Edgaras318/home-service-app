@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
 import { validateUsername, validatePassword } from "@/utils/validators"; // Moved validation to separate file
 import styles from "./RegisterForm.module.scss";
+import Button from '@/components/common/button/button'
 
 const RegisterForm = () => {
     const [form, setForm] = useState({ username: "", password: "", confirmPassword: "" });
@@ -66,6 +67,7 @@ const RegisterForm = () => {
                         value={form.username}
                         error={errors.username}
                         onChange={handleChange}
+                        placeholder="Type your username"
                     />
                     <InputField
                         label="Password"
@@ -74,6 +76,7 @@ const RegisterForm = () => {
                         value={form.password}
                         error={errors.password}
                         onChange={handleChange}
+                        placeholder="Type your password"
                     />
                     <InputField
                         label="Confirm Password"
@@ -82,10 +85,15 @@ const RegisterForm = () => {
                         value={form.confirmPassword}
                         error={errors.confirmPassword}
                         onChange={handleChange}
+                        placeholder="Type your password"
                     />
-                    <button type="submit" className={styles.submitButton} disabled={loading}>
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                        fullWidth={true}
+                    >
                         {loading ? "Registering..." : "Register"}
-                    </button>
+                    </Button>
                 </form>
                 <div className={styles.signUpLink}>
                     <p>Already have an account?</p>

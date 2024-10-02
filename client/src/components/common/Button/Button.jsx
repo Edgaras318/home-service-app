@@ -1,15 +1,18 @@
 import styles from './Button.module.scss';
 
-const Button = ({ size = 'medium', text, onClick }) => {
+const Button = ({ size = 'medium', onClick, type, disabled, children, fullWidth = false }) => {
     return (
         <button
-            className={`${styles['custom-button']} ${styles[size]}`}
+            type={type}
+            disabled={disabled}
+            className={`${styles['custom-button']} ${styles[size]} ${fullWidth ? styles['full-width'] : ''}`}
             onClick={onClick}
-            aria-label={text}
+            aria-label={children}
         >
-            {text}
+            {children}
         </button>
     );
 };
+
 
 export default Button;

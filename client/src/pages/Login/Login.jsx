@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
 import { validateUsername, validatePassword } from "@/utils/validators"; // Moved validation to separate file
 import styles from './Login.module.scss';
+import Button from "@/components/common/Button/Button.jsx";
 
 const Login = () => {
   // Combine username and password into a form state
@@ -11,6 +12,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Loading state for UX
 
   // Validate form fields
   const validate = () => {
@@ -43,6 +45,7 @@ const Login = () => {
       setErrors(validationErrors);
       return;
     }
+    setLoading(true); // Start loading
 
     try {
       // Simulate an API call
@@ -51,6 +54,8 @@ const Login = () => {
       navigate('/');
     } catch (error) {
       setErrors({ username: '', password: 'Login failed. Please try again.' });
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -76,9 +81,13 @@ const Login = () => {
                 error={errors.password}
                 placeholder="Type your password"
             />
-            <button type="submit" className={styles.loginButton}>
-              Login
-            </button>
+            <Button
+                type="submit"
+                disabled={loading}
+                fullWidth={true}
+            >
+              {loading ? "loading..." : "Login"}
+            </Button>
           </form>
 
           <div className={styles.socialLogin}>
