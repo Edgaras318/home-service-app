@@ -1,0 +1,34 @@
+.card {
+  width: 160px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background-color: $card-background-color;
+  border-radius: .5rem;
+  border: none;
+  color: $card-color;
+  font-weight: 500;
+
+
+  p {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    background-color: #f7f4fd;
+    transition: .3s;
+    cursor: pointer;
+    }
+  }
+
+  .icon {
+    color: var(--card-color);
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }

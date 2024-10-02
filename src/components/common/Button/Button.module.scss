@@ -1,0 +1,29 @@
+
+.custom-button {
+  padding: $button-padding;
+  border: none;
+  background-color: $primary-color;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primary-dark-color;
+  }
+
+  &.small {
+    font-size: .7rem;
+    padding: .5rem 1rem;
+  }
+
+  &.medium {
+    padding: .75rem 1.25rem;
+    font-size: .9rem;
+  }
+
+  &.large {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,31 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid #e6e6e6 ;
+  border-radius: 1rem;
+  font-weight: 500;
+  padding: 1rem;
+  font-size: 1.2rem;
+  color: black;
+  margin-bottom: 1rem;
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  &:hover,
+  &.active {
+    transition: .3s;
+    cursor: pointer;
+    color: $card-color;
+    background-color: $card-background-color;
+    text-decoration: none;
+    border-color: #beaaf5;
+    }
+  }
+
+  .icon {
+    color: var(--card-color);
+  }
+

@@ -1,0 +1,47 @@
+.topbar {
+  display: flex;
+  padding: 2rem 4rem;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid $border-color;
+
+  .leftSide {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+
+  .nav {
+    display: flex;
+
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 400;
+
+      li {
+        a {
+          color: $text-color;
+          color: #323232;
+          font-size: 1.2rem;
+          font-weight: 500;
+
+          &:hover {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}

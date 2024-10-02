@@ -1,0 +1,40 @@
+.searchBar {
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  display: flex;
+  align-items: stretch; // make items fill the container
+}
+
+.input {
+  padding: 1rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: 25%;
+
+
+  &:focus {
+    border-color: $primary-color; 
+  }
+}
+
+.button {
+  background-color: $primary-color;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: $primary-dark-color;
+  }
+}
