@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 
-const useLocalStorage = (key, initialValue) => {
-    const [storedValue, setStoredValue] = useState(() => {
+// Define a generic type for the value stored in local storage
+type UseLocalStorage<T> = [T, React.Dispatch<React.SetStateAction<T>>];
+
+const useLocalStorage = <T,>(key: string, initialValue: T): UseLocalStorage<T> => {
+    const [storedValue, setStoredValue] = useState<T>(() => {
         try {
             const item = window.localStorage.getItem(key);
             return item ? JSON.parse(item) : initialValue;

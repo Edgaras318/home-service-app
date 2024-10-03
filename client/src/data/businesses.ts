@@ -1,4 +1,24 @@
-export const businesses = [
+// businesses.ts
+
+// Define a type for an image associated with a business
+type Image = {
+    url: string; // URL of the image
+};
+
+// Define a type for a business
+type Business = {
+    _id: string; // Unique identifier for the business
+    name: string; // Name of the business
+    about?: string; // Description of the business (optional)
+    address: string; // Address of the business
+    category: string; // Category of the business
+    contactPerson: string; // Contact person at the business
+    email: string; // Email of the business
+    images: Image[]; // Array of images related to the business
+};
+
+// Define an array of businesses with the Business type
+export const businesses: Business[] = [
     {
         _id: "662e9aabc68c09aa945445481",
         name: "Išsivalyk pats",

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useUserStore } from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
 import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
-import { validateUsername, validatePassword } from "@/utils/validators"; // Moved validation to separate file
+import { validateUsername, validatePassword } from "@/utils/validators";
 import styles from './Login.module.scss';
 import Button from "@/components/common/Button/Button";
 
