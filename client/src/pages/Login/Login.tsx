@@ -6,23 +6,35 @@ import { validateUsername, validatePassword } from "@/utils/validators";
 import styles from './Login.module.scss';
 import Button from "@/components/common/Button/Button";
 
-const Login = () => {
+// Define the shape of the form state
+type FormState = {
+  username: string;
+  password: string;
+}
+
+// Define the shape of the errors object
+type Errors = {
+  username?: string;
+  password?: string;
+}
+
+const Login: React.FC = () => {
   // Combine username and password into a form state
-  const [form, setForm] = useState({ username: '', password: '' });
-  const [errors, setErrors] = useState({});
+  const [form, setForm] = useState<FormState>({ username: '', password: '' });
+  const [errors, setErrors] = useState<Errors>({});
   const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // Loading state for UX
+  const [loading, setLoading] = useState<boolean>(false); // Loading state for UX
 
   // Validate form fields
-  const validate = () => {
+  const validate = (): Errors => {
     const usernameError = validateUsername(form.username);
     const passwordError = validatePassword(form.password);
     return { username: usernameError, password: passwordError };
   };
 
   // Handle change for form fields
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     // Update form state
@@ -30,15 +42,15 @@ const Login = () => {
 
     // Clear error for the field being changed
     setErrors((prev) => {
-      if (prev[name]) {
-        return { ...prev, [name]: '' };
+      if (prev[name as keyof Errors]) {
+        return { ...prev, [name as keyof Errors]: '' };
       }
       return prev;
     });
   };
 
   // Handle form submission
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.values(validationErrors).some(Boolean)) {
@@ -86,7 +98,7 @@ const Login = () => {
                 disabled={loading}
                 fullWidth={true}
             >
-              {loading ? "loading..." : "Login"}
+              {loading ? "Loading..." : "Login"}
             </Button>
           </form>
 
