@@ -1,15 +1,16 @@
-// src/App.js
+// src/App.tsx
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home/Home";
-import Services from "./pages/Services";
-import AboutUs from "./pages/AboutUs"; // Fix spelling error
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
-import Root from "./Root";
-import Category from "./pages/Category/Category";
-import ErrorPage from "./pages/ErrorPage";
-import routes from './routes'; // Import the routes configuration
+import Home from "@/pages/home/home";
+import Services from "@/pages/Services";
+import AboutUs from "@/pages/AboutUs";
+import Login from "@/pages/Login/Login";
+import Register from "@/pages/Register/Register";
+import Root from "@/Root";
+import Category from "@/pages/Category/Category";
+import ErrorPage from "@/pages/ErrorPage";
+import routes from '@/routes';
 
+// Create router with type safety
 const router = createBrowserRouter([
   {
     path: routes.home,
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const App = () => {
+const App: React.FC = () => {
   return <RouterProvider router={router} />;
 };
 

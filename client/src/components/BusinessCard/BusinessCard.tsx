@@ -1,8 +1,23 @@
-// BusinessCard.js
+// BusinessCard.tsx
 import Button from "@/components/common/Button/Button";
 import styles from "./BusinessCard.module.scss";
 
-const BusinessCard = ({ business, isFavorite, toggleFavorite }) => {
+type Business = {
+    _id: string;
+    name: string;
+    images: { url: string }[];
+    category: string;
+    contactPerson: string;
+    address: string;
+};
+
+type BusinessCardProps = {
+    business: Business;
+    isFavorite: boolean;
+    toggleFavorite: (id: string) => void;
+};
+
+const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggleFavorite }) => {
     return (
         <div className={styles.businessCard}>
             <img
@@ -24,7 +39,7 @@ const BusinessCard = ({ business, isFavorite, toggleFavorite }) => {
                     {business.contactPerson}
                 </p>
                 <p className={styles.businessCard__content__address}>{business.address}</p>
-                <Button size="medium" >Book now</Button>
+                <Button size="medium">Book now</Button>
             </div>
         </div>
     );
