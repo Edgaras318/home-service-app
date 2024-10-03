@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
 import { validateUsername, validatePassword } from "@/utils/validators"; // Moved validation to separate file
 import styles from './Login.module.scss';
-import Button from "@/components/common/Button/Button.jsx";
+import Button from "@/components/common/Button/Button";
 
 const Login = () => {
   // Combine username and password into a form state
