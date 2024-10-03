@@ -1,7 +1,16 @@
 import { FaScrewdriverWrench, FaTruck, FaBrush, FaBucket, FaLightbulb } from "react-icons/fa6";
 import { PiPipeFill } from "react-icons/pi";
+import { IconType } from "react-icons";
 
-export const categories = [
+// Define the category type
+type Category = {
+    id: number;
+    icon: IconType;
+    title: string;
+    color: string;
+}
+
+export const categories: Category[] = [
     {
         id: 1,
         icon: () => <FaBucket fontSize={40} />, // Changed to a function
