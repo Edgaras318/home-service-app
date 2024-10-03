@@ -1,7 +1,11 @@
-// @TODO: ask what if given array is empty?
-export const getFirstElement = (array: number[]): number => {
-    if (array.length === 0) {
-        throw new Error("Array cannot be empty.");
-    }
-    return array[0];
-};
+// Sukuriame masyvą, kuris talpina skaičių tipo reikšmes
+const numberArray: number[] = [10, 20, 30, 40, 50];
+
+// Funkcija, kuri grąžina pirmąjį masyvo elementą
+function getFirstElement(array: number[]): number | undefined {
+    return array[0]; // Grąžiname pirmąjį elementą (jei yra)
+}
+
+// Panaudojimas
+const firstElement = getFirstElement(numberArray);
+console.log(firstElement); // Rezultatas: 10
