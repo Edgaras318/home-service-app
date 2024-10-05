@@ -1,4 +1,6 @@
-const swaggerOptions = {
+import { Options } from 'swagger-jsdoc'; // Importing SwaggerOptions for typing
+
+const swaggerOptions: Options = {
   definition: {
     openapi: '3.0.0',
     info: {
@@ -13,7 +15,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js'],
+  apis: ['./routes/*.ts'], // Ensure the file path matches the TypeScript file extension
 };
 
-module.exports = swaggerOptions;
+export default swaggerOptions; // Export the options using ES module syntax
