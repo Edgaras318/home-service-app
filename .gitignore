@@ -26,6 +26,6 @@ client/.env
 # API
 api/node_modules
 api/.env
-api/.idea/*
+api/.idea/*.xml
 api/.idea
 
