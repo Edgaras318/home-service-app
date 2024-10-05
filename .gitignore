@@ -15,6 +15,7 @@ client/*.local
 client/.vscode/*
 !client/.vscode/extensions.json
 client/.idea/
+client/.idea/*.xml
 client/.DS_Store
 client/*.suo
 client/*.ntvs*
@@ -29,3 +30,5 @@ api/.env
 api/.idea/*.xml
 api/.idea
 
+.idea/*.xml
+.idea
