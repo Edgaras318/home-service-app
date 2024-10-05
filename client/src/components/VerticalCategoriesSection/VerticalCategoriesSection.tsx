@@ -2,14 +2,7 @@
 import React from "react";
 import styles from "./VerticalCategoriesSection.module.scss";
 import VerticalCategoryCard from "@/components/VerticalCategoryCard/VerticalCategoryCard";
-import { categories } from "@/const/categories";
-
-type Category = {
-  id: number;
-  icon: () => JSX.Element; // Assuming the icon is a function that returns a JSX element
-  title: string;
-  color: string;
-};
+import { Category } from '@/types/categories';
 
 const VerticalCategoriesSection: React.FC = () => {
   return (

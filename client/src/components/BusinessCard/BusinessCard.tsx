@@ -1,18 +1,10 @@
 // BusinessCard.tsx
 import Button from "@/components/common/Button/Button";
 import styles from "./BusinessCard.module.scss";
-
-type Business = {
-    _id: string;
-    name: string;
-    images: { url: string }[];
-    category: string;
-    contactPerson: string;
-    address: string;
-};
+import {Businesses} from "@/types/businesses";
 
 type BusinessCardProps = {
-    business: Business;
+    business: Businesses;
     isFavorite: boolean;
     toggleFavorite: (id: string) => void;
 };
