@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { Business } from '../models/business';
 import { Booking } from '../models/booking';
+import { Category } from '../models/category';
+import mongoose from 'mongoose';
 
 // GET /businesses
 export const getAllBusinesses = async (req: Request, res: Response): Promise<Response> => {
@@ -38,6 +40,18 @@ export const getBusinessById = async (req: Request, res: Response): Promise<Resp
 
 // POST /businesses
 export const createBusiness = async (req: Request, res: Response): Promise<Response> => {
+  const { category } = req.body;
+
+  // Check if the category exists
+  if (!mongoose.Types.ObjectId.isValid(category)) {
+    return res.status(400).json({ message: 'Invalid category ID' });
+  }
+
+  const existingCategory = await Category.findById(category);
+  if (!existingCategory) {
+    return res.status(400).json({ message: 'Category does not exist' });
+  }
+
   const business = new Business(req.body);
 
   try {
@@ -47,6 +61,7 @@ export const createBusiness = async (req: Request, res: Response): Promise<Respo
     return res.status(400).json({ message: err instanceof Error ? err.message : 'Bad Request' });
   }
 };
+
 
 // PUT /businesses/:id
 export const updateBusiness = async (req: Request, res: Response): Promise<Response> => {
