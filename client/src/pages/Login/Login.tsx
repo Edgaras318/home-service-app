@@ -64,7 +64,8 @@ const Login: React.FC = () => {
       setUser(userData);
       navigate('/'); // Navigate to home on successful login
     } catch (error) {
-      setErrors({ email: '', password: error?.response?.data?.message });
+      const errorMessage = error?.response?.data?.message
+      setErrors({ email: '', password: errorMessage });
     } finally {
       setLoading(false); // End loading
     }

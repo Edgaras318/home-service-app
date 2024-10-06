@@ -50,7 +50,8 @@ const RegisterForm = () => {
             setUser(userData);
             navigate("/");
         } catch (error) {
-            setErrors({ password: "Registration failed. Please try again." });
+            const errorMessage = error?.response?.data?.message
+            setErrors({ confirmPassword: errorMessage });
         } finally {
             setLoading(false);
         }
