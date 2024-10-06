@@ -25,10 +25,28 @@ export type RegisterPayload = LoginPayload & {
     age: string;
 }
 
-export type AuthErrors = {
+export type ErrorsRegister = {
     name?: string;
     age?: string;
     email?: string;
     password?: string;
     confirmPassword?: string;
 }
+
+export type FormLogin = {
+    email: string;
+    password: string;
+}
+
+export type ErrorsLogin = {
+    email?: string;
+    password?: string;
+}
+
+export type FormDataRegister = {
+    name: string;
+    age: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+};

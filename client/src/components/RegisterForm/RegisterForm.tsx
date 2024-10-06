@@ -2,20 +2,20 @@
 import React, { useState } from "react";
 import { useUserStore } from "@/stores/userStore";
 import { useNavigate } from "react-router-dom";
-import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
-import {validateName, validatePassword} from "@/utils/validators"; // Moved validation to separate file
+import InputField from "@/components/common/InputField/InputField";
+import {validateName, validatePassword} from "@/utils/validators";
 import styles from "./RegisterForm.module.scss";
 import Button from '@/components/common/Button/Button'
 import {ApiService} from "@/services/api-services";
-import {AuthErrors, ErrorResponseData} from '@/types'
-import { AxiosError } from "axios";  // Import AxiosError if using Axios
+import {ErrorsRegister, ErrorResponseData, ErrorsRegister, FormDataRegister} from '@/types'
+import { AxiosError } from "axios";
 
 const RegisterForm = () => {
-    const [form, setForm] = useState({name: "", age: "", email: "", password: "", confirmPassword: "" });
-    const [errors, setErrors] = useState<AuthErrors>({});
+    const [form, setForm] = useState<FormDataRegister>({name: "", age: "", email: "", password: "", confirmPassword: "" });
+    const [errors, setErrors] = useState<ErrorsRegister>({});
     const setUser = useUserStore((state) => state.setUser);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false); // Loading state for UX
+    const [loading, setLoading] = useState(false);
 
     const validate = () => {
         const nameError = validateName(form.name);
@@ -30,8 +30,8 @@ const RegisterForm = () => {
 
         setErrors((prev) => {
             // Type assertion here
-            if (prev[name as keyof AuthErrors]) {
-                return { ...prev, [name as keyof AuthErrors]: "" };
+            if (prev[name as keyof ErrorsRegister]) {
+                return { ...prev, [name as keyof ErrorsRegister]: "" };
             }
             return prev;
         });
@@ -52,8 +52,6 @@ const RegisterForm = () => {
             navigate("/");
         } catch (error) {
             const axiosError = error as AxiosError;
-
-            // Use type assertion to tell TypeScript that `data` is an object with the shape we expect
             const errorMessage = axiosError.response?.data as ErrorResponseData;
 
             setErrors({ confirmPassword: errorMessage?.message || "An error occurred" });

@@ -1,35 +1,23 @@
 import React, { useState } from 'react';
 import { useUserStore } from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
-import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
+import InputField from "@/components/common/InputField/InputField";
 import { validateEmail, validatePassword } from "@/utils/validators";
 import styles from './LoginForm.module.scss';
 import Button from "@/components/common/Button/Button";
 import {ApiService} from "@/services/api-services";
 import {AuthResponse, ErrorResponseData} from "@/types";
 import {AxiosError} from "axios";
-
-// Define the shape of the form state
-type FormState = {
-    email: string;
-    password: string;
-}
-
-// Define the shape of the errors object
-type Errors = {
-    email?: string;
-    password?: string;
-}
+import {FormLogin, ErrorsLogin} from "@/types";
 
 const Login: React.FC = () => {
-    const [form, setForm] = useState<FormState>({ email: '', password: '' });
-    const [errors, setErrors] = useState<Errors>({});
+    const [form, setForm] = useState<FormLogin>({ email: '', password: '' });
+    const [errors, setErrors] = useState<ErrorsLogin>({});
     const setUser = useUserStore((state) => state.setUser);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState<boolean>(false); // Loading state for UX
+    const [loading, setLoading] = useState<boolean>(false);
 
-    // Validate form fields
-    const validate = (): Errors => {
+    const validate = (): ErrorsLogin => {
         const emailError = validateEmail(form.email);
         const passwordError = validatePassword(form.password);
         return { email: emailError, password: passwordError };
@@ -39,17 +27,13 @@ const Login: React.FC = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
-        // Update form state
         setForm((prev) => ({ ...prev, [name]: value }));
-
-        // Clear error for the field being changed
         setErrors((prev) => ({
             ...prev,
-            [name as keyof Errors]: '',
+            [name as keyof ErrorsLogin]: '',
         }));
     };
 
-    // Handle form submission
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const validationErrors = validate();
@@ -57,17 +41,14 @@ const Login: React.FC = () => {
             setErrors(validationErrors);
             return;
         }
-        setLoading(true); // Start loading
+        setLoading(true);
 
         try {
-            // Simulate an API call (replace with actual API call)
             const userData: AuthResponse = await ApiService.login(form.email,form.password );
             setUser(userData);
-            navigate('/'); // Navigate to home on successful login
+            navigate('/');
         } catch (error) {
             const axiosError = error as AxiosError;
-
-            // Use type assertion to tell TypeScript that `data` is an object with the shape we expect
             const errorMessage = axiosError.response?.data as ErrorResponseData;
 
             setErrors({ email: '', password: errorMessage?.message || "An error occurred" });
