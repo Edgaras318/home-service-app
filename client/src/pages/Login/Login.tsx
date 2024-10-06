@@ -6,7 +6,8 @@ import { validateEmail, validatePassword } from "@/utils/validators";
 import styles from './Login.module.scss';
 import Button from "@/components/common/Button/Button";
 import {ApiService} from "@/services/api-services";
-import {AuthResponse} from "@/types";
+import {AuthResponse, ErrorResponseData} from "@/types";
+import {AxiosError} from "axios";
 
 // Define the shape of the form state
 type FormState = {
@@ -64,8 +65,12 @@ const Login: React.FC = () => {
       setUser(userData);
       navigate('/'); // Navigate to home on successful login
     } catch (error) {
-      const errorMessage = error?.response?.data?.message
-      setErrors({ email: '', password: errorMessage });
+      const axiosError = error as AxiosError;
+
+      // Use type assertion to tell TypeScript that `data` is an object with the shape we expect
+      const errorMessage = axiosError.response?.data as ErrorResponseData;
+
+      setErrors({ email: '', password: errorMessage?.message || "An error occurred" });
     } finally {
       setLoading(false); // End loading
     }

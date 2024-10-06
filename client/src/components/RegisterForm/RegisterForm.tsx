@@ -7,7 +7,8 @@ import {validateName, validatePassword} from "@/utils/validators"; // Moved vali
 import styles from "./RegisterForm.module.scss";
 import Button from '@/components/common/Button/Button'
 import {ApiService} from "@/services/api-services";
-import {AuthErrors} from '@/types'
+import {AuthErrors, ErrorResponseData} from '@/types'
+import { AxiosError } from "axios";  // Import AxiosError if using Axios
 
 const RegisterForm = () => {
     const [form, setForm] = useState({name: "", age: "", email: "", password: "", confirmPassword: "" });
@@ -50,8 +51,12 @@ const RegisterForm = () => {
             setUser(userData);
             navigate("/");
         } catch (error) {
-            const errorMessage = error?.response?.data?.message
-            setErrors({ confirmPassword: errorMessage });
+            const axiosError = error as AxiosError;
+
+            // Use type assertion to tell TypeScript that `data` is an object with the shape we expect
+            const errorMessage = axiosError.response?.data as ErrorResponseData;
+
+            setErrors({ confirmPassword: errorMessage?.message || "An error occurred" });
         } finally {
             setLoading(false);
         }
