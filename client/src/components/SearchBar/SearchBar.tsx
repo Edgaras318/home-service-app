@@ -41,15 +41,6 @@ const SearchBar: React.FC = () => {
       >
         <CiSearch fontSize={24} />
       </button>
-      {searchTerm && (
-        <button
-          className={styles.clearButton}
-          onClick={() => setSearchTerm("")} // Clear the search term
-          aria-label="Clear search"
-        >
-          Clear
-        </button>
-      )}
     </div>
   );
 };
