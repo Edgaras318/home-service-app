@@ -14,15 +14,17 @@ const fetchBusinesses = async (): Promise<Business[]> => {
 export const useBusinesses = () => {
     const queryClient = useQueryClient(); // Get the query client
 
-    return {
-        ...useQuery<Business[], Error>({
+    const query= useQuery<Business[], Error>({
             queryKey: ['businesses'],
             queryFn: fetchBusinesses,
             staleTime: 1000 * 60 * 5,
-            cacheTime: 1000 * 60 * 10,
+            gcTime: 1000 * 60 * 10,
             retry: 1,
-        }),
-        invalidateBusinesses: () => queryClient.invalidateQueries(['businesses']),
+        });
+
+    return {
+        ...query,
+        invalidateBusinesses: () => queryClient.invalidateQueries({ queryKey: ['businesses'] }),
         setBusinesses: (data: Business[]) => queryClient.setQueryData(['businesses'], data),
     };
 };
