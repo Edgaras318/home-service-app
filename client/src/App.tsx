@@ -9,6 +9,7 @@ import Root from "@/Root";
 import Category from "@/pages/Category/Category";
 import ErrorPage from "@/pages/ErrorPage";
 import routes from '@/routes';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Create router with type safety
 const router = createBrowserRouter([
@@ -45,8 +46,14 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 const App: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return(
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+  );
 };
 
 export default App;

@@ -1,11 +1,9 @@
-// BusinessCardList.tsx
 import BusinessCard from "@/components/BusinessCard/BusinessCard";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import styles from "./BusinessCardList.module.scss";
-import {Business} from "@/types";
-import {ApiService} from "@/services/api-services";
-import React, {useEffect, useState} from "react";
+import { Business } from "@/types";
 import Spinner from "@/components/Spinner/Spinner";
+import { useBusinesses } from "@/hooks/useBusinesses";
 
 type BusinessCardListProps = {
   category?: string;
@@ -14,47 +12,34 @@ type BusinessCardListProps = {
 
 const BusinessCardList: React.FC<BusinessCardListProps> = ({ category, gridColumns = 4 }) => {
   const [favorites, setFavorites] = useLocalStorage<string[]>('favorites', []);
-  const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchBusinesses = async () => {
-    try {
-      const response = await ApiService.getBusinesses();
-      if (response.data && Array.isArray(response.data)) {
-        setBusinesses(response.data);
-      } else {
-        throw new Error('Unexpected data structure');
-      }
-    } catch (err: any) {
-      console.error('Error fetching categories:', err);
-      setError(err?.response?.data?.message || err?.message || 'Failed to load categories');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBusinesses();
-  }, []);
+  const { data: businesses, error, isLoading, invalidateBusinesses, setBusinesses } = useBusinesses();
 
   const toggleFavorite = (businessId: string) => {
-    if (favorites.includes(businessId)) {
-      setFavorites(favorites.filter(id => id !== businessId));
-    } else {
-      setFavorites([...favorites, businessId]);
-    }
+    const updatedFavorites = favorites.includes(businessId)
+        ? favorites.filter(id => id !== businessId)
+        : [...favorites, businessId];
+
+    setFavorites(updatedFavorites);
+
+    // Update the cached businesses immediately
+    setBusinesses(businesses.map(business => ({
+      ...business,
+      isFavorite: updatedFavorites.includes(business._id),
+    })));
+
+    // Invalidate the queries if needed
+    invalidateBusinesses();
   };
 
   const filteredBusinesses = category
       ? businesses.filter((business: Business) => business.category.name === category)
       : businesses;
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
   if (error) return (
       <div>
-        <p>Error: {error}</p>
-        <button onClick={fetchBusinesses}>Retry</button>
+        <p>Error: {error.message}</p>
+        <button onClick={() => invalidateBusinesses()}>Retry</button>
       </div>
   );
 
@@ -63,12 +48,12 @@ const BusinessCardList: React.FC<BusinessCardListProps> = ({ category, gridColum
           className={styles.businessCardList}
           style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}
       >
-        {filteredBusinesses.map((business: Business) => (
+        {filteredBusinesses?.map((business: Business) => (
             <BusinessCard
                 key={business._id}
                 business={business}
-                isFavorite={favorites.includes(business._id)} // This line is correct
-                toggleFavorite={toggleFavorite} // Make sure this line is correct
+                isFavorite={favorites.includes(business._id)}
+                toggleFavorite={toggleFavorite}
             />
         ))}
       </div>

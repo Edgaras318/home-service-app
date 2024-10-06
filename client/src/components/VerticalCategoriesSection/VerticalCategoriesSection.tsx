@@ -1,40 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./VerticalCategoriesSection.module.scss";
 import VerticalCategoryCard from "@/components/VerticalCategoryCard/VerticalCategoryCard";
 import { Category } from "@/types/categories";
-import { ApiService } from "@/services/api-services";
 import Spinner from "@/components/Spinner/Spinner";
+import { useCategories } from "@/hooks/useCategories";
 
 const VerticalCategoriesSection: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const { data: categories, error, isLoading, refetch, invalidateCategories } = useCategories();
 
-    const fetchCategories = async () => {
-        try {
-            const response = await ApiService.getCategories();
-            if (response.data && Array.isArray(response.data)) {
-                setCategories(response.data);
-            } else {
-                throw new Error("Unexpected data structure");
-            }
-        } catch (err: any) {
-            console.error("Error fetching categories:", err);
-            setError(err?.response?.data?.message || err?.message || "Failed to load categories");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
-
-    if (loading) return <Spinner />;
+    if (isLoading) return <Spinner />;
     if (error) return (
         <div>
-            <p>Error: {error}</p>
-            <button onClick={fetchCategories}>Retry</button>
+            <p>Error: {error.message}</p>
+            <button onClick={() => invalidateCategories()}>Retry</button> {/* Invalidate to refetch data */}
         </div>
     );
 
