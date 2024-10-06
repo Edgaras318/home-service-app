@@ -46,7 +46,7 @@ const RegisterForm = () => {
 
         setLoading(true);
         try {
-            const userData = await ApiService.register(form.email, form.age, form.name, form.password);
+            const userData = await ApiService.register(form.name, form.age, form.email, form.password);
             setUser(userData);
             navigate("/");
         } catch (error) {
