@@ -23,12 +23,9 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
-    console.log(user._id)
-    console.log(typeof user._id)
-    console.log('gi')
     // Generate JWT token
     const token = generateToken(user._id);
-    console.log(token)
+
     // Send the token as response
     return res.json({ token });
   } catch (error: any) {
