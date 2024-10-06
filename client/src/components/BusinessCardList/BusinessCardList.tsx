@@ -32,7 +32,7 @@ const BusinessCardList: React.FC<BusinessCardListProps> = ({ category, gridColum
   };
 
   const filteredBusinesses = category
-      ? businesses.filter((business: Business) => business.category.name === category)
+      ? businesses?.filter((business: Business) => business.category.name === category)
       : businesses;
 
   if (isLoading) return <Spinner />;
