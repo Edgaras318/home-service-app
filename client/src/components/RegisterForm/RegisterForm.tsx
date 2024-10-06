@@ -1,31 +1,24 @@
+// RegisterForm.tsx
 import React from "react";
 import { useUserStore } from "@/stores/userStore";
 import { useNavigate } from "react-router-dom";
 import InputField from "@/components/common/InputField/InputField";
 import styles from "./RegisterForm.module.scss";
-import Button from '@/components/common/Button/Button';
+import Button from "@/components/common/Button/Button";
 import { ApiService } from "@/services/api-services";
-import {  ErrorResponseData, FormDataRegister } from '@/types';
+import { ErrorResponseData, FormDataRegister } from '@/types';
 import { AxiosError } from "axios";
 import { Formik, Form, Field, FormikHelpers } from 'formik';
-import {registerValidationSchema} from '@/schemas/authValidationSchemas'; // Adjust the path as necessary
+import { registerValidationSchema, registerInitialValues } from '@/schemas/authValidationSchemas';
+import { errorMessages } from '@/consts/errorMessages'; // Import the error messages
 
 const RegisterForm: React.FC = () => {
     const setUser = useUserStore((state) => state.setUser);
     const navigate = useNavigate();
 
-    const initialValues: FormDataRegister = {
-        name: "",
-        age: 0,
-        email: "",
-        password: "",
-        confirmPassword: ""
-    };
-
     const handleSubmit = async (values: FormDataRegister, { setSubmitting, setErrors }: FormikHelpers<FormDataRegister>) => {
-        // Check for password confirmation
         if (values.password !== values.confirmPassword) {
-            setErrors({ confirmPassword: "Passwords do not match." });
+            setErrors({ confirmPassword: errorMessages.authentication.passwordMismatch });
             setSubmitting(false);
             return;
         }
@@ -38,7 +31,7 @@ const RegisterForm: React.FC = () => {
             const axiosError = error as AxiosError;
             const errorMessage = axiosError.response?.data as ErrorResponseData;
 
-            setErrors({ confirmPassword: errorMessage?.message || "An error occurred" });
+            setErrors({ confirmPassword: errorMessage?.message || errorMessages.authentication.defaultError });
         } finally {
             setSubmitting(false);
         }
@@ -49,11 +42,11 @@ const RegisterForm: React.FC = () => {
             <div className={styles.formBox}>
                 <h1>Register</h1>
                 <Formik
-                    initialValues={initialValues}
+                    initialValues={registerInitialValues}
                     validationSchema={registerValidationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({ isSubmitting, errors }) => (
+                    {({ isSubmitting, errors, touched }) => (
                         <Form>
                             <Field
                                 name="name"
@@ -61,7 +54,7 @@ const RegisterForm: React.FC = () => {
                                 placeholder="Type your name"
                                 as={InputField}
                                 label="Name"
-                                error={errors.name}
+                                error={touched.name && errors.name}
                             />
                             <Field
                                 name="age"
@@ -69,7 +62,7 @@ const RegisterForm: React.FC = () => {
                                 placeholder="Type your age"
                                 as={InputField}
                                 label="Age"
-                                error={errors.age}
+                                error={touched.age && errors.age}
                             />
                             <Field
                                 name="email"
@@ -77,7 +70,7 @@ const RegisterForm: React.FC = () => {
                                 placeholder="Type your email"
                                 as={InputField}
                                 label="Email"
-                                error={errors.email}
+                                error={touched.email && errors.email}
                             />
                             <Field
                                 name="password"
@@ -85,7 +78,7 @@ const RegisterForm: React.FC = () => {
                                 placeholder="Type your password"
                                 as={InputField}
                                 label="Password"
-                                error={errors.password}
+                                error={touched.password && errors.password}
                             />
                             <Field
                                 name="confirmPassword"
@@ -93,13 +86,9 @@ const RegisterForm: React.FC = () => {
                                 placeholder="Confirm your password"
                                 as={InputField}
                                 label="Confirm Password"
-                                error={errors.confirmPassword}
+                                error={touched.confirmPassword && errors.confirmPassword}
                             />
-                            <Button
-                                type="submit"
-                                disabled={isSubmitting}
-                                fullWidth={true}
-                            >
+                            <Button type="submit" disabled={isSubmitting} fullWidth>
                                 {isSubmitting ? "Registering..." : "Register"}
                             </Button>
                         </Form>

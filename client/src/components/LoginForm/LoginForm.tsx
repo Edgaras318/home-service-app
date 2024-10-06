@@ -1,3 +1,4 @@
+// LoginForm.tsx
 import React from 'react';
 import { useUserStore } from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
@@ -5,23 +6,17 @@ import InputField from "@/components/common/InputField/InputField";
 import styles from './LoginForm.module.scss';
 import Button from "@/components/common/Button/Button";
 import { ApiService } from "@/services/api-services";
-import { AuthResponse, ErrorResponseData } from "@/types";
+import { AuthResponse, ErrorResponseData, LoginPayload } from "@/types";
 import { AxiosError } from "axios";
 import { Formik, Form, Field, FormikHelpers } from 'formik';
-import { loginValidationSchema } from '@/schemas/authValidationSchemas'; // Adjust the path as necessary
-
-interface LoginValues {
-    email: string;
-    password: string;
-}
+import { loginValidationSchema, loginInitialValues } from '@/schemas/authValidationSchemas';
+import { errorMessages } from '@/consts/errorMessages'; // Import the error messages
 
 const Login: React.FC = () => {
     const setUser = useUserStore((state) => state.setUser);
     const navigate = useNavigate();
 
-    const initialValues: LoginValues = { email: '', password: '' };
-
-    const handleSubmit = async (values: LoginValues, { setSubmitting, setErrors }: FormikHelpers<LoginValues>) => {
+    const handleSubmit = async (values: LoginPayload, { setSubmitting, setErrors }: FormikHelpers<LoginPayload>) => {
         try {
             const userData: AuthResponse = await ApiService.login(values.email, values.password);
             setUser(userData);
@@ -30,7 +25,7 @@ const Login: React.FC = () => {
             const axiosError = error as AxiosError;
             const errorMessage = axiosError.response?.data as ErrorResponseData;
 
-            setErrors({ email: '', password: errorMessage?.message || "An error occurred" });
+            setErrors({ email: '', password: errorMessage?.message || errorMessages.authentication.defaultError });
         } finally {
             setSubmitting(false);
         }
@@ -41,19 +36,19 @@ const Login: React.FC = () => {
             <div className={styles.loginBox}>
                 <h1>Login</h1>
                 <Formik
-                    initialValues={initialValues}
+                    initialValues={loginInitialValues}
                     validationSchema={loginValidationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({ isSubmitting, errors }) => (
+                    {({ isSubmitting, errors, touched }) => (
                         <Form>
                             <Field
                                 name="email"
-                                type="text"
+                                type="email"
                                 placeholder="Type your email"
                                 as={InputField}
                                 label="Email"
-                                error={errors.email}
+                                error={touched.email && errors.email}
                             />
                             <Field
                                 name="password"
@@ -61,9 +56,9 @@ const Login: React.FC = () => {
                                 placeholder="Type your password"
                                 as={InputField}
                                 label="Password"
-                                error={errors.password}
+                                error={touched.password && errors.password}
                             />
-                            <Button type="submit" disabled={isSubmitting} fullWidth={true}>
+                            <Button type="submit" disabled={isSubmitting} fullWidth>
                                 {isSubmitting ? "Loading..." : "Login"}
                             </Button>
                         </Form>
