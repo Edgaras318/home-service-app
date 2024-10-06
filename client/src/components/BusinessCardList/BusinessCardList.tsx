@@ -20,17 +20,6 @@ const BusinessCardList: React.FC<BusinessCardListProps> = ({ category, gridColum
         : [...favorites, businessId];
 
     setFavorites(updatedFavorites);
-
-      // Update the cached businesses immediately if businesses is defined
-      if (businesses) {
-          setBusinesses(businesses.map(business => ({
-              ...business,
-              isFavorite: updatedFavorites.includes(business._id),
-          })));
-      }
-
-    // Invalidate the queries if needed
-    invalidateBusinesses();
   };
 
   const filteredBusinesses = category
