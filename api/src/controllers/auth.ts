@@ -14,6 +14,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
   try {
     // Check if the user exists
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
@@ -26,8 +27,14 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     // Generate JWT token
     const token = generateToken(user._id);
 
+    const userDetails = await User.findById(user._id).select(
+        "-password"
+    );
+
     // Send the token as response
-    return res.json({ token });
+    return res
+        .status(200)
+        .json({ status: "success", token, user: userDetails });
   } catch (error: any) {
 
     return res.status(500).json({ message: 'Server error', error: error.message });
@@ -60,8 +67,13 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     // Generate JWT token
     const token = generateToken(user._id);
 
+    // Convert user to plain object and exclude password
+    const { password: _, ...userWithoutPassword } = user.toObject(); // Use destructuring to exclude the password
+
     // Send the token as response
-    return res.status(201).json({ token });
+    return res
+        .status(201)
+        .json({ status: "success", token, user: userWithoutPassword });
   } catch (error: any) {
     return res.status(500).json({ message: 'Server error', error: error.message });
   }
