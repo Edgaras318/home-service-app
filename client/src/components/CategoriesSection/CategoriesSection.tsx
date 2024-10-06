@@ -3,7 +3,7 @@ import CategoryCard from "@/components/CategoryCard/CategoryCard";
 import styles from './CategoriesSection.module.scss';
 import { Category } from '@/types/categories';
 import { ApiService } from "@/services/api-services";
-import Spinner from "@/components/Spinner/Spinner"; // Assume you have a Spinner component
+import Spinner from "@/components/Spinner/Spinner";
 
 const CategoriesSection: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -44,15 +44,13 @@ const CategoriesSection: React.FC = () => {
                 {categories.length === 0 ? (
                     <p>No categories available.</p>
                 ) : (
-                    categories.map((category: Category) => (
+                    categories.map((category: Category) =>
                         category?.name && category._id ? (
-                            <div>
-                                <CategoryCard key={category._id} category={category} />
-                            </div>
+                            <CategoryCard key={category._id} category={category} />
                         ) : (
                             <p key={category._id}>Category data is incomplete.</p>
                         )
-                    ))
+                    )
                 )}
             </div>
         </section>

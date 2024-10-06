@@ -1,14 +1,12 @@
-type Image = {
-    url: string; // URL of the image
-};
+import {Category} from "@/types/categories";
 
 export type Business = {
     _id: string;
     name: string;
     description: string;
-    category: string;
+    category: Category;
     contactPerson: string;
     address: string;
     email: string;
-    photos: Image[];
+    photos: string[];
 };

@@ -47,14 +47,14 @@ const BusinessCardList: React.FC<BusinessCardListProps> = ({ category, gridColum
   };
 
   const filteredBusinesses = category
-      ? businesses.filter((business: Business) => business.category === category)
+      ? businesses.filter((business: Business) => business.category.name === category)
       : businesses;
 
   if (loading) return <Spinner />;
   if (error) return (
       <div>
         <p>Error: {error}</p>
-        <button onClick={fetchCategories}>Retry</button>
+        <button onClick={fetchBusinesses}>Retry</button>
       </div>
   );
 
@@ -67,8 +67,8 @@ const BusinessCardList: React.FC<BusinessCardListProps> = ({ category, gridColum
             <BusinessCard
                 key={business._id}
                 business={business}
-                isFavorite={favorites.includes(business._id)}
-                toggleFavorite={toggleFavorite}
+                isFavorite={favorites.includes(business._id)} // This line is correct
+                toggleFavorite={toggleFavorite} // Make sure this line is correct
             />
         ))}
       </div>

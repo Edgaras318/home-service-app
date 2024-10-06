@@ -39,26 +39,23 @@ const VerticalCategoriesSection: React.FC = () => {
     );
 
     return (
-    <section className={styles.container}>
-        <h2 className={styles.title}>Categories</h2>
-        <div>
-            {categories.length === 0 ? (
-                <p>No categories available.</p>
-            ) : (
-                categories.map((category: Category) => (
-                    category?.name && category._id ? (
-                        <div>
-                            <VerticalCategoryCard key={category._id} category={category}/>
-                        </div>
-                    ) : (
-                        <p key={category._id}>Category data is incomplete.</p>
+        <section className={styles.container}>
+            <h2 className={styles.title}>Categories</h2>
+            <div>
+                {categories.length === 0 ? (
+                    <p>No categories available.</p>
+                ) : (
+                    categories.map((category: Category) =>
+                        category?.name && category._id ? (
+                            <VerticalCategoryCard key={category._id} category={category} />
+                        ) : (
+                            <p key={category._id}>Category data is incomplete.</p>
+                        )
                     )
-                ))
-            )}
-        </div>
-    </section>
-)
-    ;
+                )}
+            </div>
+        </section>
+    );
 };
 
 export default VerticalCategoriesSection;

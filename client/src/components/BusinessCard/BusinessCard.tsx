@@ -1,19 +1,20 @@
 // BusinessCard.tsx
 import Button from "@/components/common/Button/Button";
 import styles from "./BusinessCard.module.scss";
-import {Businesses} from "@/types/businesses";
+import {Business} from "@/types/businesses";
 
 type BusinessCardProps = {
-    business: Businesses;
+    business: Business;
     isFavorite: boolean;
-    toggleFavorite: (id: string) => void;
+    toggleFavorite: (id: string) => void; // Add this line
 };
 
-const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggleFavorite }) => {
+const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggleFavorite }) => { // Make sure to include isFavorite and toggleFavorite here
+    const { photos, iconUrl, _id, category, contactPerson } = business; // Destructure properties from the category
     return (
         <div className={styles.businessCard}>
             <img
-                src={business.images[0].url}
+                src={business.photos[0]}
                 alt={business.name}
                 className={styles.businessCard__image}
             />
@@ -24,7 +25,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
             </button>
             <div className={styles.businessCard__content}>
                 <p className={styles.businessCard__content__category}>
-                    {business.category}
+                    {business.category.name}
                 </p>
                 <h2 className={styles.businessCard__content__name}>{business.name}</h2>
                 <p className={styles.businessCard__content__contact}>
