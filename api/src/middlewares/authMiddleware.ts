@@ -30,7 +30,6 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     // Verify the token and cast it to UserPayload
     const payload = jwt.verify(token, process.env.JWT_SECRET as string) as UserPayload;
-    console.log(payload);
 
     // Attach the payload to the request object
     req.currentUser = payload;
