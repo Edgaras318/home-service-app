@@ -1,0 +1,17 @@
+.icon {
+  width: 24px; /* Default size */
+  height: 24px; /* Default size */
+
+  mask-size: contain; /* Ensures the entire icon fits within the container */
+  -webkit-mask-size: contain; /* WebKit support */
+
+  mask-repeat: no-repeat; /* Prevents the mask from repeating */
+  -webkit-mask-repeat: no-repeat;
+
+  mask-position: center; /* Centers the mask in the container */
+  -webkit-mask-position: center;
+
+  display: inline-block; /* Helps with inline elements */
+
+  background-color: currentColor; /* Allows color control via text color (useful for icons) */
+}

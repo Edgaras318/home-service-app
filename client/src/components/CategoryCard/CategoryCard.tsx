@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./CategoryCard.module.scss";
 import { Link } from "react-router-dom"; // Import the SCSS file for styling
 import {Category} from "@/types";
+import UrlIcon from "@/components/common/UrlIcon/UrlIcon";
 
 type CategoryCardProps = {
     category: Category; // Expect category object here
@@ -13,16 +14,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
     const routePath = `/search/${name?.replace(/\s+/g, "-").toLowerCase()}`;
 
     return (
-        <>
-            <div>{name}</div>
-            <div>{routePath}</div>
-        </>
-        // <Link to={routePath} className={styles.card}>
-        //     <div className={styles.icon} style={{ "--card-color": color }}>
-        //         {icon}
-        //     </div>
-        //     <p>{title}</p>
-        // </Link>
+        <Link to={routePath} className={styles.card}>
+            <UrlIcon
+                url={iconUrl}
+                size={48}
+                color={backgroundColor}
+            />
+            <p>{name}</p>
+        </Link>
     );
 };
 
