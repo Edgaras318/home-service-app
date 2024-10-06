@@ -12,6 +12,7 @@
 
   p {
     font-size: 1.2rem;
+    text-transform: capitalize;
   }
 
   &:hover,
@@ -24,8 +25,3 @@
     border-color: #beaaf5;
     }
   }
-
-  .icon {
-    color: var(--card-color);
-  }
-

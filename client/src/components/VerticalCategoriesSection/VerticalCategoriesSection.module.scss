@@ -1,6 +1,10 @@
-
 .title{
     color: #8056eb;
     font-size: 1.4rem;
     margin-bottom: 2rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
 }

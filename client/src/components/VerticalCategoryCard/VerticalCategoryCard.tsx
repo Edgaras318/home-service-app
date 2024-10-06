@@ -2,41 +2,36 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./VerticalCategoryCard.module.scss";
+import {Category} from "@/types";
+import UrlIcon from "@/components/common/UrlIcon/UrlIcon";
 
 type VerticalCategoryCardProps = {
-  icon: React.ReactNode; // or a specific type if it's a certain component
-  title: string;
-  color: string;
+  category: Category; // Expect category object here
 };
 
-const VerticalCategoryCard: React.FC<VerticalCategoryCardProps> = ({
-  icon,
-  title,
-  color,
-}) => {
-  const routePath = `/search/${title.replace(/\s+/g, "-").toLowerCase()}`;
+const VerticalCategoryCard: React.FC<VerticalCategoryCardProps> = ({ category }) => {
+  const { _id, iconUrl, name, backgroundColor } = category; // Destructure properties from the category
+  const routePath = `/search/${name?.replace(/\s+/g, "-").toLowerCase()}`;
   const params = useParams();
   const activeName = params.category;
 
   // Compare in a case-insensitive manner
   const isActive =
     activeName &&
-    activeName.toLowerCase() === title.replace(/\s+/g, "-").toLowerCase();
+    activeName.toLowerCase() === name?.replace(/\s+/g, "-").toLowerCase();
 
   return (
     <Link
       to={routePath}
       className={`${styles.card} ${isActive ? styles.active : ""}`}
-      aria-label={`Search for ${title}`} // Add descriptive ARIA label
+      aria-label={`Search for ${name}`} // Add descriptive ARIA label
     >
-      <div
-        className={styles.icon}
-        style={{ "--card-color": color || "#000" }} // Fallback to black if no color provided
-      >
-        {icon || <span className={styles.defaultIcon}>🔍</span>}{" "}
-        {/* Default icon if none provided */}
-      </div>
-      <p className={styles.title}>{title}</p>
+      <UrlIcon
+          url={iconUrl}
+          size={48}
+          color={backgroundColor}
+      />
+      <p >{name}</p>
     </Link>
   );
 };
