@@ -22,30 +22,12 @@ export type LoginPayload = {
 // Use intersection (&) to extend LoginPayload for RegisterPayload
 export type RegisterPayload = LoginPayload & {
     name: string;
-    age: string;
-}
-
-export type ErrorsRegister = {
-    name?: string;
-    age?: string;
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-}
-
-export type FormLogin = {
-    email: string;
-    password: string;
-}
-
-export type ErrorsLogin = {
-    email?: string;
-    password?: string;
+    age: number;
 }
 
 export type FormDataRegister = {
     name: string;
-    age: string;
+    age: number;
     email: string;
     password: string;
     confirmPassword: string;

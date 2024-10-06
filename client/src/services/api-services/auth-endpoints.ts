@@ -11,7 +11,7 @@ export const login = async (email: string, password: string): Promise<AuthRespon
 };
 
 // Function to handle registration
-export const register = async (name: string, age: string, email: string, password: string): Promise<AuthResponse> => {
+export const register = async (name: string, age: number, email: string, password: string): Promise<AuthResponse> => {
     const payload: RegisterPayload = { name, age, email, password };
     const response = await axiosInstance.post<AuthResponse>(`/${entityPath}/register`, payload);
     return response.data;  // Return the data part of the response

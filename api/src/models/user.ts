@@ -41,10 +41,10 @@ const userSchema = new mongoose.Schema<IUser>(
 // Joi Validation Schema
 const validateUser = (data: { name: string; age: number; email: string; password: string; }) => {
     const schema = Joi.object({
-        name: Joi.string().min(1).required(),
+        name: Joi.string().min(3).required(),
         age: Joi.number().min(0).required(), // Assuming age should be a non-negative number
         email: Joi.string().email().required(),
-        password: Joi.string().min(6).required(),
+        password: Joi.string().min(8).required(),
     });
     return schema.validate(data);
 };

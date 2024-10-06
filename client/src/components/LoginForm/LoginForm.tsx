@@ -1,50 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useUserStore } from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
 import InputField from "@/components/common/InputField/InputField";
-import { validateEmail, validatePassword } from "@/utils/validators";
 import styles from './LoginForm.module.scss';
 import Button from "@/components/common/Button/Button";
-import {ApiService} from "@/services/api-services";
-import {AuthResponse, ErrorResponseData} from "@/types";
-import {AxiosError} from "axios";
-import {FormLogin, ErrorsLogin} from "@/types";
+import { ApiService } from "@/services/api-services";
+import { AuthResponse, ErrorResponseData } from "@/types";
+import { AxiosError } from "axios";
+import { Formik, Form, Field, FormikHelpers } from 'formik';
+import { loginValidationSchema } from '@/schemas/authValidationSchemas'; // Adjust the path as necessary
+
+interface LoginValues {
+    email: string;
+    password: string;
+}
 
 const Login: React.FC = () => {
-    const [form, setForm] = useState<FormLogin>({ email: '', password: '' });
-    const [errors, setErrors] = useState<ErrorsLogin>({});
     const setUser = useUserStore((state) => state.setUser);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState<boolean>(false);
 
-    const validate = (): ErrorsLogin => {
-        const emailError = validateEmail(form.email);
-        const passwordError = validatePassword(form.password);
-        return { email: emailError, password: passwordError };
-    };
+    const initialValues: LoginValues = { email: '', password: '' };
 
-    // Handle change for form fields
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-
-        setForm((prev) => ({ ...prev, [name]: value }));
-        setErrors((prev) => ({
-            ...prev,
-            [name as keyof ErrorsLogin]: '',
-        }));
-    };
-
-    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const validationErrors = validate();
-        if (Object.values(validationErrors).some(Boolean)) {
-            setErrors(validationErrors);
-            return;
-        }
-        setLoading(true);
-
+    const handleSubmit = async (values: LoginValues, { setSubmitting, setErrors }: FormikHelpers<LoginValues>) => {
         try {
-            const userData: AuthResponse = await ApiService.login(form.email,form.password );
+            const userData: AuthResponse = await ApiService.login(values.email, values.password);
             setUser(userData);
             navigate('/');
         } catch (error) {
@@ -53,7 +32,7 @@ const Login: React.FC = () => {
 
             setErrors({ email: '', password: errorMessage?.message || "An error occurred" });
         } finally {
-            setLoading(false); // End loading
+            setSubmitting(false);
         }
     };
 
@@ -61,32 +40,35 @@ const Login: React.FC = () => {
         <div className={styles.loginContainer}>
             <div className={styles.loginBox}>
                 <h1>Login</h1>
-                <form onSubmit={handleLogin}>
-                    <InputField
-                        label="Email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        error={errors.email}
-                        placeholder="Type your email"
-                    />
-                    <InputField
-                        label="Password"
-                        name="password"
-                        type="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        error={errors.password}
-                        placeholder="Type your password"
-                    />
-                    <Button
-                        type="submit"
-                        disabled={loading}
-                        fullWidth={true}
-                    >
-                        {loading ? "Loading..." : "Login"}
-                    </Button>
-                </form>
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={loginValidationSchema}
+                    onSubmit={handleSubmit}
+                >
+                    {({ isSubmitting, errors }) => (
+                        <Form>
+                            <Field
+                                name="email"
+                                type="text"
+                                placeholder="Type your email"
+                                as={InputField}
+                                label="Email"
+                                error={errors.email}
+                            />
+                            <Field
+                                name="password"
+                                type="password"
+                                placeholder="Type your password"
+                                as={InputField}
+                                label="Password"
+                                error={errors.password}
+                            />
+                            <Button type="submit" disabled={isSubmitting} fullWidth={true}>
+                                {isSubmitting ? "Loading..." : "Login"}
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
 
                 <div className={styles.socialLogin}>
                     <div className={`${styles.socialIcon} ${styles.facebookIcon}`}>F</div>

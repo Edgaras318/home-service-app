@@ -1,53 +1,37 @@
-// RegisterForm.tsx
-import React, { useState } from "react";
+import React from "react";
 import { useUserStore } from "@/stores/userStore";
 import { useNavigate } from "react-router-dom";
 import InputField from "@/components/common/InputField/InputField";
-import {validateName, validatePassword} from "@/utils/validators";
 import styles from "./RegisterForm.module.scss";
-import Button from '@/components/common/Button/Button'
-import {ApiService} from "@/services/api-services";
-import {ErrorsRegister, ErrorResponseData, ErrorsRegister, FormDataRegister} from '@/types'
+import Button from '@/components/common/Button/Button';
+import { ApiService } from "@/services/api-services";
+import {  ErrorResponseData, FormDataRegister } from '@/types';
 import { AxiosError } from "axios";
+import { Formik, Form, Field, FormikHelpers } from 'formik';
+import {registerValidationSchema} from '@/schemas/authValidationSchemas'; // Adjust the path as necessary
 
-const RegisterForm = () => {
-    const [form, setForm] = useState<FormDataRegister>({name: "", age: "", email: "", password: "", confirmPassword: "" });
-    const [errors, setErrors] = useState<ErrorsRegister>({});
+const RegisterForm: React.FC = () => {
     const setUser = useUserStore((state) => state.setUser);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
 
-    const validate = () => {
-        const nameError = validateName(form.name);
-        const passwordError = validatePassword(form.password);
-        const confirmPasswordError = form.password !== form.confirmPassword ? "Passwords do not match." : "";
-        return { name: nameError, password: passwordError, confirmPassword: confirmPasswordError };
+    const initialValues: FormDataRegister = {
+        name: "",
+        age: 0,
+        email: "",
+        password: "",
+        confirmPassword: ""
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-
-        setErrors((prev) => {
-            // Type assertion here
-            if (prev[name as keyof ErrorsRegister]) {
-                return { ...prev, [name as keyof ErrorsRegister]: "" };
-            }
-            return prev;
-        });
-    };
-
-    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const validationErrors = validate();
-        if (Object.values(validationErrors).some(Boolean)) {
-            setErrors(validationErrors);
+    const handleSubmit = async (values: FormDataRegister, { setSubmitting, setErrors }: FormikHelpers<FormDataRegister>) => {
+        // Check for password confirmation
+        if (values.password !== values.confirmPassword) {
+            setErrors({ confirmPassword: "Passwords do not match." });
+            setSubmitting(false);
             return;
         }
 
-        setLoading(true);
         try {
-            const userData = await ApiService.register(form.name, form.age, form.email, form.password);
+            const userData = await ApiService.register(values.name, values.age, values.email, values.password);
             setUser(userData);
             navigate("/");
         } catch (error) {
@@ -56,7 +40,7 @@ const RegisterForm = () => {
 
             setErrors({ confirmPassword: errorMessage?.message || "An error occurred" });
         } finally {
-            setLoading(false);
+            setSubmitting(false);
         }
     };
 
@@ -64,60 +48,63 @@ const RegisterForm = () => {
         <div className={styles.container}>
             <div className={styles.formBox}>
                 <h1>Register</h1>
-                <form onSubmit={handleRegister}>
-                    <InputField
-                        label="Name"
-                        name="name"
-                        type="text"
-                        value={form.name}
-                        error={errors.name}
-                        onChange={handleChange}
-                        placeholder="Type your name"
-                    />
-                    <InputField
-                        label="Age"
-                        name="age"
-                        type="number"
-                        value={form.age}
-                        error={errors.age}
-                        onChange={handleChange}
-                        placeholder="Type your age"
-                    />
-                    <InputField
-                        label="Email"
-                        name="email"
-                        type="email"
-                        value={form.email}
-                        error={errors.email}
-                        onChange={handleChange}
-                        placeholder="Type your username"
-                    />
-                    <InputField
-                        label="Password"
-                        name="password"
-                        type="password"
-                        value={form.password}
-                        error={errors.password}
-                        onChange={handleChange}
-                        placeholder="Type your password"
-                    />
-                    <InputField
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        type="password"
-                        value={form.confirmPassword}
-                        error={errors.confirmPassword}
-                        onChange={handleChange}
-                        placeholder="Type your password"
-                    />
-                    <Button
-                        type="submit"
-                        disabled={loading}
-                        fullWidth={true}
-                    >
-                        {loading ? "Registering..." : "Register"}
-                    </Button>
-                </form>
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={registerValidationSchema}
+                    onSubmit={handleSubmit}
+                >
+                    {({ isSubmitting, errors }) => (
+                        <Form>
+                            <Field
+                                name="name"
+                                type="text"
+                                placeholder="Type your name"
+                                as={InputField}
+                                label="Name"
+                                error={errors.name}
+                            />
+                            <Field
+                                name="age"
+                                type="number"
+                                placeholder="Type your age"
+                                as={InputField}
+                                label="Age"
+                                error={errors.age}
+                            />
+                            <Field
+                                name="email"
+                                type="email"
+                                placeholder="Type your email"
+                                as={InputField}
+                                label="Email"
+                                error={errors.email}
+                            />
+                            <Field
+                                name="password"
+                                type="password"
+                                placeholder="Type your password"
+                                as={InputField}
+                                label="Password"
+                                error={errors.password}
+                            />
+                            <Field
+                                name="confirmPassword"
+                                type="password"
+                                placeholder="Confirm your password"
+                                as={InputField}
+                                label="Confirm Password"
+                                error={errors.confirmPassword}
+                            />
+                            <Button
+                                type="submit"
+                                disabled={isSubmitting}
+                                fullWidth={true}
+                            >
+                                {isSubmitting ? "Registering..." : "Register"}
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
                 <div className={styles.signUpLink}>
                     <p>Already have an account?</p>
                     <a href="/login">Login</a>
