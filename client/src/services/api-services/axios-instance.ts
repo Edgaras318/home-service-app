@@ -1,4 +1,4 @@
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { InternalAxiosRequestConfig, AxiosHeaders } from "axios";
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -14,10 +14,11 @@ axiosInstance.interceptors.request.use(
 
         // If token exists, add it to the Authorization header
         if (token) {
-            config.headers = {
-                ...config.headers,
-                Authorization: `Bearer ${token}`,
-            };
+            // Create a new AxiosHeaders object and set the Authorization header
+            const headers = new AxiosHeaders(config.headers);
+            headers.set('Authorization', `Bearer ${token}`);
+
+            config.headers = headers;
         }
 
         return config;

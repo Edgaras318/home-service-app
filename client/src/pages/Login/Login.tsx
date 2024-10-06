@@ -2,25 +2,26 @@ import React, { useState } from 'react';
 import { useUserStore } from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
 import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
-import { validateUsername, validatePassword } from "@/utils/validators";
+import { validateEmail, validatePassword } from "@/utils/validators";
 import styles from './Login.module.scss';
 import Button from "@/components/common/Button/Button";
+import {ApiService} from "@/services/api-services";
+import {AuthResponse} from "@/types";
 
 // Define the shape of the form state
 type FormState = {
-  username: string;
+  email: string;
   password: string;
 }
 
 // Define the shape of the errors object
 type Errors = {
-  username?: string;
+  email?: string;
   password?: string;
 }
 
 const Login: React.FC = () => {
-  // Combine username and password into a form state
-  const [form, setForm] = useState<FormState>({ username: '', password: '' });
+  const [form, setForm] = useState<FormState>({ email: '', password: '' });
   const [errors, setErrors] = useState<Errors>({});
   const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
@@ -28,9 +29,9 @@ const Login: React.FC = () => {
 
   // Validate form fields
   const validate = (): Errors => {
-    const usernameError = validateUsername(form.username);
+    const emailError = validateEmail(form.email);
     const passwordError = validatePassword(form.password);
-    return { username: usernameError, password: passwordError };
+    return { email: emailError, password: passwordError };
   };
 
   // Handle change for form fields
@@ -41,12 +42,10 @@ const Login: React.FC = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
 
     // Clear error for the field being changed
-    setErrors((prev) => {
-      if (prev[name as keyof Errors]) {
-        return { ...prev, [name as keyof Errors]: '' };
-      }
-      return prev;
-    });
+    setErrors((prev) => ({
+      ...prev,
+      [name as keyof Errors]: '',
+    }));
   };
 
   // Handle form submission
@@ -60,12 +59,12 @@ const Login: React.FC = () => {
     setLoading(true); // Start loading
 
     try {
-      // Simulate an API call
-      const userData = { username: form.username };
+      // Simulate an API call (replace with actual API call)
+      const userData: AuthResponse = await ApiService.login(form.email,form.password );
       setUser(userData);
-      navigate('/');
+      navigate('/'); // Navigate to home on successful login
     } catch (error) {
-      setErrors({ username: '', password: 'Login failed. Please try again.' });
+      setErrors({ email: '', password: 'Login failed. Please try again.' });
     } finally {
       setLoading(false); // End loading
     }
@@ -77,16 +76,16 @@ const Login: React.FC = () => {
           <h1>Login</h1>
           <form onSubmit={handleLogin}>
             <InputField
-                label="Username"
-                name="username"  // Add the 'name' attribute to map to form state
-                value={form.username}
+                label="Email"
+                name="email"
+                value={form.email}
                 onChange={handleChange}
-                error={errors.username}
-                placeholder="Type your username"
+                error={errors.email}
+                placeholder="Type your email"
             />
             <InputField
                 label="Password"
-                name="password"  // Add the 'name' attribute to map to form state
+                name="password"
                 type="password"
                 value={form.password}
                 onChange={handleChange}

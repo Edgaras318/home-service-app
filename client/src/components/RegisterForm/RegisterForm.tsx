@@ -3,39 +3,40 @@ import React, { useState } from "react";
 import { useUserStore } from "@/stores/userStore";
 import { useNavigate } from "react-router-dom";
 import InputField from "@/components/common/InputField/InputField"; // New reusable input field component
-import { validateUsername, validatePassword } from "@/utils/validators"; // Moved validation to separate file
+import {validateName, validatePassword} from "@/utils/validators"; // Moved validation to separate file
 import styles from "./RegisterForm.module.scss";
-import Button from '@/components/common/button/button'
+import Button from '@/components/common/Button/Button'
+import {ApiService} from "@/services/api-services";
+import {AuthErrors} from '@/types'
 
 const RegisterForm = () => {
-    const [form, setForm] = useState({ username: "", password: "", confirmPassword: "" });
-    const [errors, setErrors] = useState({});
+    const [form, setForm] = useState({name: "", age: "", email: "", password: "", confirmPassword: "" });
+    const [errors, setErrors] = useState<AuthErrors>({});
     const setUser = useUserStore((state) => state.setUser);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Loading state for UX
 
     const validate = () => {
-        const usernameError = validateUsername(form.username);
+        const nameError = validateName(form.name);
         const passwordError = validatePassword(form.password);
         const confirmPasswordError = form.password !== form.confirmPassword ? "Passwords do not match." : "";
-        return { username: usernameError, password: passwordError, confirmPassword: confirmPasswordError };
+        return { name: nameError, password: passwordError, confirmPassword: confirmPasswordError };
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-
         setForm((prev) => ({ ...prev, [name]: value }));
 
         setErrors((prev) => {
-            if (prev[name]) {
-                // Only update if an error exists for this field
-                return { ...prev, [name]: "" };
+            // Type assertion here
+            if (prev[name as keyof AuthErrors]) {
+                return { ...prev, [name as keyof AuthErrors]: "" };
             }
-            return prev; // No error, no need to update state
+            return prev;
         });
     };
 
-    const handleRegister = async (e) => {
+    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const validationErrors = validate();
         if (Object.values(validationErrors).some(Boolean)) {
@@ -43,16 +44,15 @@ const RegisterForm = () => {
             return;
         }
 
-        setLoading(true); // Start loading
+        setLoading(true);
         try {
-            // Simulate an API call
-            const userData = { username: form.username };
+            const userData = await ApiService.register(form.email, form.age, form.name, form.password);
             setUser(userData);
             navigate("/");
         } catch (error) {
             setErrors({ password: "Registration failed. Please try again." });
         } finally {
-            setLoading(false); // End loading
+            setLoading(false);
         }
     };
 
@@ -62,11 +62,29 @@ const RegisterForm = () => {
                 <h1>Register</h1>
                 <form onSubmit={handleRegister}>
                     <InputField
-                        label="Username"
-                        name="username"
+                        label="Name"
+                        name="name"
                         type="text"
-                        value={form.username}
-                        error={errors.username}
+                        value={form.name}
+                        error={errors.name}
+                        onChange={handleChange}
+                        placeholder="Type your name"
+                    />
+                    <InputField
+                        label="Age"
+                        name="age"
+                        type="number"
+                        value={form.age}
+                        error={errors.age}
+                        onChange={handleChange}
+                        placeholder="Type your age"
+                    />
+                    <InputField
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={form.email}
+                        error={errors.email}
                         onChange={handleChange}
                         placeholder="Type your username"
                     />

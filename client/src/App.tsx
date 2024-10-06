@@ -1,6 +1,6 @@
 // src/App.tsx
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "@/pages/home/home";
+import Home from "@/pages/Home/Home";
 import Services from "@/pages/Services";
 import AboutUs from "@/pages/AboutUs";
 import Login from "@/pages/Login/Login";

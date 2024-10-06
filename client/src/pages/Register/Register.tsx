@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/RegisterForm/RegisterForm.tsx"; // Import CSS Module styles
+import RegisterForm from "@/components/RegisterForm/RegisterForm";
 
 const Register: React.FC = () => {
 

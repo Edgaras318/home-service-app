@@ -53,7 +53,7 @@ const Topbar: React.FC = () => {
         </nav>
       </div>
       {user ? (
-        <UserAvatar username={user.username} onLogout={handleLogout} />
+        <UserAvatar username={user.name} onLogout={handleLogout} />
       ) : (
         <Button size="large" onClick={handleButtonClick}>
           Login / Sign Up

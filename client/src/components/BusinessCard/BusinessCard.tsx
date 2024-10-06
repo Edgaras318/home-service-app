@@ -10,7 +10,7 @@ type BusinessCardProps = {
 };
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggleFavorite }) => { // Make sure to include isFavorite and toggleFavorite here
-    const { photos, iconUrl, _id, category, contactPerson } = business; // Destructure properties from the category
+    const { photos, _id, category, contactPerson } = business; // Destructure properties from the category
     return (
         <div className={styles.businessCard}>
             <img

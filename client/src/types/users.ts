@@ -3,7 +3,7 @@ export type User = {
     _id: string;
     name: string;
     email: string;
-    age: number;
+    age: string;
 }
 
 // Define the AuthResponse type
@@ -21,6 +21,14 @@ export type LoginPayload = {
 
 // Use intersection (&) to extend LoginPayload for RegisterPayload
 export type RegisterPayload = LoginPayload & {
-    // name: string;
-    // age: number;
+    name: string;
+    age: string;
+}
+
+export type AuthErrors = {
+    name?: string;
+    age?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
 }
