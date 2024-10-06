@@ -84,4 +84,4 @@ businessSchema.pre<IBusiness>('save', function (next) {
 
 // Create Business Model
 const Business: Model<IBusiness> = mongoose.model<IBusiness>('Business', businessSchema);
-export { Business, validateBusiness };
+export { Business };

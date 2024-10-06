@@ -6,7 +6,6 @@ import { generateToken } from '../utils/tokenUtils';
 // POST /auth/login
 export const login = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
-
   // Validate request body
   if (!email || !password) {
     return res.status(400).json({ message: "Please provide both email and password." });
@@ -24,13 +23,16 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
-
+    console.log(user._id)
+    console.log(typeof user._id)
+    console.log('gi')
     // Generate JWT token
     const token = generateToken(user._id);
-
+    console.log(token)
     // Send the token as response
     return res.json({ token });
   } catch (error: any) {
+
     return res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

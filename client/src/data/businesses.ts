@@ -19,20 +19,7 @@ type Business = {
 
 // Define an array of businesses with the Business type
 export const businesses: Business[] = [
-    {
-        _id: "662e9aabc68c09aa945445481",
-        name: "Išsivalyk pats",
-        about: "Description One",
-        address: "Kauno g. 27, Vilnius",
-        category: "cleaning",
-        contactPerson: "Tadas Gedvilas",
-        email: "email@example.com",
-        images: [
-            {
-                url: "https://www.pristinehome.com.au/wp-content/uploads/2020/01/15-Cleaning-Tips-from-Professional-Cleaners-3.jpg",
-            },
-        ],
-    },
+
     {
         _id: "662e9ac5c68c09aa945445492",
         name: "UAB Valymas",

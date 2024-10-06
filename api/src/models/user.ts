@@ -49,13 +49,29 @@ const validateUser = (data: { name: string; age: number; email: string; password
     return schema.validate(data);
 };
 
-// Hash password before saving the user
+// Mongoose Pre-save Hook to Validate Data
 userSchema.pre<IUser>('save', async function (next) {
-    if (this.isModified('password')) {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
+    const { name, age, email, password } = this;
+
+    // Validate user data
+    const { error } = validateUser({
+        name,
+        age,
+        email,
+        password,
+    });
+
+    if (error) {
+        console.log(error); // eslint-disable-line no-console
+        next(new Error(error.details[0].message));
+    } else {
+        // Hash password only if it's modified
+        if (this.isModified('password')) {
+            const salt = await bcrypt.genSalt(10);
+            this.password = await bcrypt.hash(this.password, salt);
+        }
+        next();
     }
-    next();
 });
 
 // Compare entered password with hashed password
@@ -65,4 +81,4 @@ userSchema.methods.isCorrectPassword = async function (enteredPassword: string):
 
 // Export the User model and validation function
 const User: Model<IUser> = mongoose.model<IUser>('User', userSchema);
-export default User
+export default User;
