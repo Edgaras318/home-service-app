@@ -11,3 +11,10 @@ export const getBusinesses = async (search?: string) => {
 
     return axiosInstance.get(url);
 }
+
+export const getBusinessById = async (id: string) => {
+    let url = entityPath;
+        url+= `/${id}`
+
+    return axiosInstance.get(url);
+}

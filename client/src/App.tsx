@@ -10,6 +10,7 @@ import Category from "@/pages/Category/Category";
 import ErrorPage from "@/pages/ErrorPage";
 import routes from '@/routes';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import BusinessDetails from "@/pages/BusinessDetails/BusinessDetails";
 
 // Create router with type safety
 const router = createBrowserRouter([
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: routes.category(':category'),
         element: <Category />,
+      },
+      {
+        path: routes.businessDetails(':business_id'),
+        element: <BusinessDetails />,
       },
     ],
   },

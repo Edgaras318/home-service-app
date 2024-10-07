@@ -17,7 +17,7 @@ const Category: React.FC = () => {
             <div className={styles.leftContainer}>
                 <VerticalCategoriesSection />
             </div>
-            <div className={styles.businessContainer}>
+            <div className={styles.categoryContainer}>
                 <h1 className={styles.title}>{category || "Category Not Found"}</h1>
                 <BusinessCardList category={category} gridColumns={3} />
             </div>
