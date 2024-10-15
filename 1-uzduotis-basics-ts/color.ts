@@ -5,14 +5,11 @@ export enum Color {
 }
 
 export const getColorName = (color: Color): string => {
-    switch (color) {
-        case Color.Red:
-            return 'Red';
-        case Color.Green:
-            return 'Green';
-        case Color.Blue:
-            return 'Blue';
-        default:
-            return 'Unknown color';
-    }
+    const colorNames: { [key in Color]: string } = {
+        [Color.Red]: 'Red',
+        [Color.Green]: 'Green',
+        [Color.Blue]: 'Blue',
+    };
+
+    return colorNames[color] || 'Unknown color';
 };
