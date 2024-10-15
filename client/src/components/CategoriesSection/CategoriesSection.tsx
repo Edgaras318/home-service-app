@@ -11,7 +11,8 @@ const CategoriesSection: React.FC = () => {
     if (error) return (
         <div>
             <p>Error: {error.message}</p>
-            <button onClick={() => invalidateCategories()}>Retry</button> {/* Invalidate to refetch data */}
+            <button onClick={() => invalidateCategories()}>Retry</button>
+            {/* Invalidate to refetch data */}
         </div>
     );
 

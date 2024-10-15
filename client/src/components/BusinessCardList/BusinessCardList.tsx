@@ -4,6 +4,7 @@ import styles from "./BusinessCardList.module.scss";
 import { Business } from "@/types";
 import Spinner from "@/components/Spinner/Spinner";
 import { useBusinesses } from "@/hooks/useBusinesses";
+import React from "react";
 
 type BusinessCardListProps = {
   category?: string;
@@ -29,14 +30,14 @@ const BusinessCardList: React.FC<BusinessCardListProps> = ({ category, gridColum
   if (isLoading) return <Spinner />;
   if (error) return (
       <div>
-        <p>Error: {error.message}</p>
-        <button onClick={() => invalidateBusinesses()}>Retry</button>
+          <p>Error: {error.message}</p>
+          <button onClick={() => invalidateBusinesses()}>Retry</button>
       </div>
   );
 
-  return (
-      <div
-          className={styles.businessCardList}
+    return (
+        <div
+            className={styles.businessCardList}
           style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}
       >
         {filteredBusinesses?.map((business: Business) => (

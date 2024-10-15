@@ -6,6 +6,7 @@ import { sendResponse } from '../utils/responseUtil'; // Import the utility func
 export const getAllCategories = async (req: Request, res: Response): Promise<Response> => {
   try {
     const categories = await Category.find();
+
     return sendResponse(res, categories); // Use the standardized response function
   } catch (err) {
     return sendResponse(res, undefined, err instanceof Error ? err.message : 'Internal Server Error', 500);

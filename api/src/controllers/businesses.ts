@@ -9,6 +9,7 @@ import { sendResponse } from '../utils/responseUtil'; // Import the utility func
 export const getAllBusinesses = async (req: Request, res: Response): Promise<Response> => {
   try {
     const businesses = await Business.find().populate('category');
+
     return sendResponse(res, businesses); // Use the standardized response function
   } catch (err) {
     return sendResponse(res, undefined, err instanceof Error ? err.message : 'Internal Server Error', 500);
