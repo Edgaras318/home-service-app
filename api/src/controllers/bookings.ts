@@ -1,26 +1,27 @@
 import { Booking } from '../models/booking'; // Correct the import to match your model export
 import { Request, Response } from 'express';
+import { sendResponse } from '../utils/responseUtil'; // Import the utility function
 
 // GET /bookings/user/:email
 export const getBookingsByUserEmail = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const bookings = await Booking.find({ userEmail: req.params.email }); // Use Booking instead of Bookings
-    return res.status(200).json(bookings);
+    const bookings = await Booking.find({ userEmail: req.params.email });
+    return sendResponse(res, bookings); // Use the standardized response function
   } catch (err) {
-    return res.status(500).json({ message: (err as Error).message });
+    return sendResponse(res, undefined, (err as Error).message, 500); // Use the standardized response function
   }
 };
 
 // POST /bookings
 export const createBooking = async (req: Request, res: Response): Promise<Response> => {
   const bookingData = req.body; // You may define an interface for the booking data if needed
-  const booking = new Booking(bookingData); // Use Booking instead of Bookings
+  const booking = new Booking(bookingData);
 
   try {
     const savedBooking = await booking.save();
-    return res.status(201).json(savedBooking);
+    return sendResponse(res, savedBooking, 'Booking created successfully.', 201); // Use the standardized response function
   } catch (err) {
-    return res.status(400).json({ message: (err as Error).message });
+    return sendResponse(res, undefined, (err as Error).message, 400); // Use the standardized response function
   }
 };
 
@@ -28,12 +29,12 @@ export const createBooking = async (req: Request, res: Response): Promise<Respon
 export const deleteBooking = async (req: Request, res: Response): Promise<Response> => {
   try {
     const bookingId = req.params.id;
-    const deletedBooking = await Booking.findByIdAndDelete(bookingId); // Use Booking instead of Bookings
+    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
     if (!deletedBooking) {
-      return res.status(404).json({ message: 'Booking not found' });
+      return sendResponse(res, undefined, 'Booking not found', 404); // Use the standardized response function
     }
-    return res.status(204).send(); // No content, successful deletion
+    return sendResponse(res, undefined, 'Booking deleted successfully.', 204); // No content response
   } catch (err) {
-    return res.status(500).json({ message: (err as Error).message });
+    return sendResponse(res, undefined, (err as Error).message, 500); // Use the standardized response function
   }
 };

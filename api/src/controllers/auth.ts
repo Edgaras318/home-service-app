@@ -2,13 +2,15 @@
 import { Request, Response } from 'express';
 import User from "../models/user";
 import { generateToken } from '../utils/tokenUtils';
+import { sendResponse } from '../utils/responseUtil'; // Import the utility function
 
 // POST /auth/login
 export const login = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
+
   // Validate request body
   if (!email || !password) {
-    return res.status(400).json({ message: "Please provide both email and password." });
+    return sendResponse(res, undefined, "Please provide both email and password.", 400); // Use the standardized response function
   }
 
   try {
@@ -16,28 +18,25 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return sendResponse(res, undefined, 'Invalid email or password', 400); // Use the standardized response function
     }
 
     // Verify the password using instance method
     const isMatch = await user.isCorrectPassword(password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return sendResponse(res, undefined, 'Invalid email or password', 400); // Use the standardized response function
     }
+
     // Generate JWT token
     const token = generateToken(user._id);
 
-    const userDetails = await User.findById(user._id).select(
-        "-password"
-    );
+    // Exclude password from the user details
+    const userDetails = await User.findById(user._id).select("-password");
 
-    // Send the token as response
-    return res
-        .status(200)
-        .json({ status: "success", token, user: userDetails });
+    // Send the token and user details as response
+    return sendResponse(res, { token, user: userDetails }, 'Login successful'); // Use the standardized response function
   } catch (error: any) {
-
-    return res.status(500).json({ message: 'Server error', error: error.message });
+    return sendResponse(res, undefined, 'Server error', 500); // Use the standardized response function
   }
 };
 
@@ -47,7 +46,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
 
   // Validate request body
   if (!name || !email || !password || !age) {
-    return res.status(400).json({ message: 'Please provide all required fields (name, age, email, password).' });
+    return sendResponse(res, undefined, 'Please provide all required fields (name, age, email, password).', 400); // Use the standardized response function
   }
 
   try {
@@ -55,7 +54,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      return sendResponse(res, undefined, 'User already exists', 400); // Use the standardized response function
     }
 
     // Create a new user instance
@@ -67,14 +66,12 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     // Generate JWT token
     const token = generateToken(user._id);
 
-    // Convert user to plain object and exclude password
+    // Exclude password from the user object
     const { password: _, ...userWithoutPassword } = user.toObject(); // Use destructuring to exclude the password
 
-    // Send the token as response
-    return res
-        .status(201)
-        .json({ status: "success", token, user: userWithoutPassword });
+    // Send the token and user details as response
+    return sendResponse(res, { token, user: userWithoutPassword }, 'Registration successful', 201); // Use the standardized response function
   } catch (error: any) {
-    return res.status(500).json({ message: 'Server error', error: error.message });
+    return sendResponse(res, undefined, 'Server error', 500); // Use the standardized response function
   }
 };
