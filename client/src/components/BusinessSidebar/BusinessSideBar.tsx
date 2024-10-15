@@ -4,14 +4,15 @@ import { TbClockHour4 } from "react-icons/tb";
 import { RxUpload } from "react-icons/rx";
 import Button from '@/components/common/Button/Button';
 import styles from './BusinessSidebar.module.scss';
+import SimilarBusinessCardList from "@/components/SimilarBusinessCardList/SimilarBusinessCardList";
+import {Business} from "@/types";
 
 type SidebarProps = {
-    business: {
-        contactPerson: string;
-    };
+    business: Business
 };
 
 const BusinessSidebar: React.FC<SidebarProps> = ({ business }) => {
+
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarTop}>
@@ -29,19 +30,12 @@ const BusinessSidebar: React.FC<SidebarProps> = ({ business }) => {
                     <p>Available 8:00 AM to 10:00 PM</p>
                 </div>
             </div>
+
             <Button fullWidth>Book Appointment</Button>
-            <div className={styles.similarBusinesses}>
+
+            <div className={styles.similarBusinessesSection}>
                 <h2>Similar Businesses</h2>
-                <ul>
-                    <li>
-                        <p>House Cleaning</p>
-                        <p>123 Main St, City</p>
-                    </li>
-                    <li>
-                        <p>Bathroom Cleaning</p>
-                        <p>456 Second St, City</p>
-                    </li>
-                </ul>
+                <SimilarBusinessCardList />
             </div>
         </div>
     );
