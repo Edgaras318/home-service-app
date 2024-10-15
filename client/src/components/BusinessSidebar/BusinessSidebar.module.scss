@@ -1,0 +1,68 @@
+.sidebarContainer {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .sidebarTop {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 5rem;
+  }
+
+  .upload {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .contactPerson {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    justify-content: flex-end;
+
+    p {
+      font-size: 1.1rem;
+      color: #715bcb;
+    }
+  }
+
+  .availability {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    justify-content: flex-end;
+
+    p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+  }
+
+  .similarBusinesses {
+    h2 {
+      font-size: 1.2rem;
+      padding: 2rem 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        background-color: white;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+        p {
+          margin: 0;
+          font-size: 1rem;
+          color: #333;
+        }
+      }
+    }
+  }
+}
