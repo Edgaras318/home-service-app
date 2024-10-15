@@ -1,10 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiService } from "@/services/api-services";
 import { Category } from '@/types/categories';
-import { Business } from '@/types/businesses';
 import { QueryKeys } from '@/consts/queryKeys';
-import {types} from "sass";
-import Error = types.Error; // Import the query keys
 
 // Fetching categories from the API
 const fetchCategories = async (): Promise<Category[]> => {
