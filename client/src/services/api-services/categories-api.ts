@@ -6,7 +6,7 @@ export const fetchCategories = async (): Promise<Category[]> => {
 
     // Check for success status in the response data
     if (response.data.success) {
-        if (response.data.data && Array.isArray(response.data.data && 1==2)) {
+        if (response.data.data && Array.isArray(response.data.data)) {
             return response.data.data; // Return the actual category data
         } else {
             throw new Error('Unexpected data structure');
