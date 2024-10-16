@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { persist, PersistStorage } from 'zustand/middleware';
-import { AuthResponse, User } from "@/types";
+import { AuthData, User } from "@/types";
 
 // Define the state shape for the store
 type UserStore = {
     user: User | null; // User can be null or an object of type User
     token: string | null; // Token can be null or a string
-    setUser: (userData: AuthResponse) => void; // Function to set user data
+    setUser: (userData: AuthData) => void; // Function to set user data
     clearUser: () => void; // Function to clear user data
 };
 
