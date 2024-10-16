@@ -6,7 +6,6 @@ export type User = {
     age: string;
 }
 
-
 export interface AuthData {
     token: string;         // JWT token
     user: User;           // User information

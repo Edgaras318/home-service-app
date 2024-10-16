@@ -1,52 +1,37 @@
-// src/hooks/useAuth.ts
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ApiService } from "@/services/api-services";
-import { AuthResponse, ErrorResponseData, LoginPayload, FormDataRegister } from "@/types";
-import { errorMessages } from '@/consts/errorMessages';
-import { QueryKeys } from '@/consts/queryKeys';
+import { useMutation } from '@tanstack/react-query';
+import { ApiService } from '@/services/api-services';
+import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '@/stores/userStore';
+import { FormDataRegister, LoginPayload } from '@/types';
+import {QueryKeys} from "@/consts/queryKeys";
 
-export const useLogin = () => {
-    const queryClient = useQueryClient();
+interface UseAuthOptions {
+    mode: 'register' | 'login';
+}
 
-    const mutation = useMutation<AuthResponse, ErrorResponseData, LoginPayload>({
-        mutationFn: async (values) => {
-            const response = await ApiService.login(values.email, values.password);
-            return response.data;
+export const useAuth = ({ mode }: UseAuthOptions) => {
+    const setUser = useUserStore((state) => state.setUser);
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: async (values: LoginPayload | FormDataRegister) => {
+            if (mode === 'register') {
+                const { name, age, email, password } = values as FormDataRegister;
+                return ApiService.register(name, age, email, password);
+            } else {
+                const { email, password } = values as LoginPayload;
+                return ApiService.login(email, password);
+            }
         },
-        onError: (error: ErrorResponseData) => {
-            throw new Error(error?.message || errorMessages.authentication.defaultError);
-        },
+        mutationKey: [QueryKeys.USERS],
+
         onSuccess: (data) => {
-            // Set user data in query cache
-            queryClient.setQueryData(QueryKeys.USERS, data);
+            setUser(data?.data);
+            navigate('/');
+        },
+        onError: (error) => {
+            // Handle error if necessary (logging, notifications, etc.)
+            console.error("Authentication error: ", error);
         },
     });
-
-    return {
-        ...mutation,
-        // Optional: to invalidate user data after logout
-        invalidateUser: () => queryClient.invalidateQueries({ queryKey: QueryKeys.USERS }),
-    };
-};
-
-export const useRegister = () => {
-    const queryClient = useQueryClient();
-
-    const mutation = useMutation<AuthResponse, ErrorResponseData, FormDataRegister>({
-        mutationFn: async (values) => {
-            const response = await ApiService.register(values.name, values.age, values.email, values.password);
-            return response.data;
-        },
-        onError: (error: ErrorResponseData) => {
-            throw new Error(error?.message || errorMessages.authentication.defaultError);
-        },
-        onSuccess: (data) => {
-            // Set user data in query cache
-            queryClient.setQueryData(QueryKeys.USERS, data);
-        },
-    });
-
-    return {
-        ...mutation,
-    };
 };
