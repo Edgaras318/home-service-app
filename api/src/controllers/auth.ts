@@ -1,16 +1,16 @@
-// src/controllers/auth.ts
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import User from "../models/user";
 import { generateToken } from '../utils/tokenUtils';
 import { sendResponse } from '../utils/responseUtil'; // Import the utility function
 
 // POST /auth/login
-export const login = async (req: Request, res: Response): Promise<Response> => {
+export const login: RequestHandler = async (req, res) => {
   const { email, password } = req.body;
 
   // Validate request body
   if (!email || !password) {
-    return sendResponse(res, undefined, "Please provide both email and password.", 400); // Use the standardized response function
+    sendResponse(res, undefined, "Please provide both email and password.", 400);
+    return;
   }
 
   try {
@@ -18,13 +18,15 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return sendResponse(res, undefined, 'Invalid email or password', 400); // Use the standardized response function
+      sendResponse(res, undefined, 'Invalid email or password', 400);
+      return;
     }
 
     // Verify the password using instance method
     const isMatch = await user.isCorrectPassword(password);
     if (!isMatch) {
-      return sendResponse(res, undefined, 'Invalid email or password', 400); // Use the standardized response function
+      sendResponse(res, undefined, 'Invalid email or password', 400);
+      return;
     }
 
     // Generate JWT token
@@ -34,19 +36,20 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     const userDetails = await User.findById(user._id).select("-password");
 
     // Send the token and user details as response
-    return sendResponse(res, { token, user: userDetails }, 'Login successful'); // Use the standardized response function
+    sendResponse(res, { token, user: userDetails }, 'Login successful');
   } catch (error: any) {
-    return sendResponse(res, undefined, 'Server error', 500); // Use the standardized response function
+    sendResponse(res, undefined, 'Server error', 500);
   }
 };
 
 // POST /auth/register
-export const register = async (req: Request, res: Response): Promise<Response> => {
+export const register: RequestHandler = async (req, res) => {
   const { name, age, email, password } = req.body;
 
   // Validate request body
   if (!name || !email || !password || !age) {
-    return sendResponse(res, undefined, 'Please provide all required fields (name, age, email, password).', 400); // Use the standardized response function
+    sendResponse(res, undefined, 'Please provide all required fields (name, age, email, password).', 400);
+    return;
   }
 
   try {
@@ -54,7 +57,8 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     let user = await User.findOne({ email });
 
     if (user) {
-      return sendResponse(res, undefined, 'User already exists', 400); // Use the standardized response function
+      sendResponse(res, undefined, 'User already exists', 400);
+      return;
     }
 
     // Create a new user instance
@@ -70,8 +74,8 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     const { password: _, ...userWithoutPassword } = user.toObject(); // Use destructuring to exclude the password
 
     // Send the token and user details as response
-    return sendResponse(res, { token, user: userWithoutPassword }, 'Registration successful', 201); // Use the standardized response function
+    sendResponse(res, { token, user: userWithoutPassword }, 'Registration successful', 201);
   } catch (error: any) {
-    return sendResponse(res, undefined, 'Server error', 500); // Use the standardized response function
+    sendResponse(res, undefined, 'Server error', 500);
   }
 };
