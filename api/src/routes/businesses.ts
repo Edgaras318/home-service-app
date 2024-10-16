@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import {
     getAllBusinesses,
     getBusinessesByCategory,
@@ -12,34 +12,22 @@ import authMiddleware from '../middlewares/authMiddleware';
 const router = express.Router();
 
 // GET /businesses
-router.get('/', async (req: Request, res: Response) => {
-    await getAllBusinesses(req, res);
-});
+router.get('/', getAllBusinesses);
 
 // GET /businesses/category/:category
-router.get('/category/:category', async (req: Request, res: Response) => {
-    await getBusinessesByCategory(req, res);
-});
+router.get('/category/:category', getBusinessesByCategory);
 
 // GET /businesses/:id
-router.get('/:id', async (req: Request, res: Response) => {
-    await getBusinessById(req, res);
-});
+router.get('/:id', getBusinessById);
 
 // POST /businesses
-router.post('/', authMiddleware, async (req: Request, res: Response) => {
-    await createBusiness(req, res);
-});
+router.post('/', authMiddleware, createBusiness);
 
 // PUT /businesses/:id
-router.put('/:id', authMiddleware, async (req: Request, res: Response) => {
-    await updateBusiness(req, res);
-});
+router.put('/:id', authMiddleware, updateBusiness);
 
 // GET /businesses/:businessId/bookings/date/:date
-router.get('/:businessId/bookings/date/:date', async (req: Request, res: Response) => {
-    await getBookingsByBusinessAndDate(req, res);
-});
+router.get('/:businessId/bookings/date/:date', getBookingsByBusinessAndDate);
 
 // Export the router
 export default router;

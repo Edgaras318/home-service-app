@@ -1,16 +1,13 @@
-// src/routes/categories.ts
-import express, {Request, Response} from 'express';
+import express from 'express';
 import { getAllCategories, createCategory } from '../controllers/categories';
 import authMiddleware from '../middlewares/authMiddleware';
 
 const router = express.Router();
 
-router.get('/', async (req: Request, res: Response) => {
-    await getAllCategories(req, res);
-});
+// GET /categories
+router.get('/', getAllCategories);
 
-router.post('/', authMiddleware, async (req: Request, res: Response) => {
-    await createCategory(req, res);
-});
+// POST /categories
+router.post('/', authMiddleware, createCategory);
 
-export default router; // Use ES module export syntax
+export default router;

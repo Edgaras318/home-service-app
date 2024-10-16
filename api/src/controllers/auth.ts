@@ -1,4 +1,4 @@
-import { Request, RequestHandler, Response } from 'express';
+import {  RequestHandler } from 'express';
 import User from "../models/user";
 import { generateToken } from '../utils/tokenUtils';
 import { sendResponse } from '../utils/responseUtil'; // Import the utility function
