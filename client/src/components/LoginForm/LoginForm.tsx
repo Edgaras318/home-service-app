@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     const handleSubmit = async (values: LoginPayload, { setSubmitting, setErrors }: FormikHelpers<LoginPayload>) => {
         try {
             const userData: AuthResponse = await ApiService.login(values.email, values.password);
-            setUser(userData);
+            setUser(userData?.data);
             navigate('/');
         } catch (error) {
             const axiosError = error as AxiosError;

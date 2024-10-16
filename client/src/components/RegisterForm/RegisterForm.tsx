@@ -25,7 +25,7 @@ const RegisterForm: React.FC = () => {
 
         try {
             const userData = await ApiService.register(values.name, values.age, values.email, values.password);
-            setUser(userData);
+            setUser(userData?.data);
             navigate("/");
         } catch (error) {
             const axiosError = error as AxiosError;
