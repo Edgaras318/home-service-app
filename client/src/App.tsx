@@ -11,7 +11,7 @@ import ErrorPage from "@/pages/ErrorPage";
 import routes from '@/routes';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import BusinessDetails from "@/pages/BusinessDetails/BusinessDetails";
-
+import { SnackbarProvider } from 'notistack';
 // Create router with type safety
 const router = createBrowserRouter([
   {
@@ -56,7 +56,9 @@ const queryClient = new QueryClient();
 const App: React.FC = () => {
   return(
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <SnackbarProvider>
+          <RouterProvider router={router} />
+        </SnackbarProvider>
       </QueryClientProvider>
   );
 };

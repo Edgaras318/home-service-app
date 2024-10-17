@@ -8,7 +8,7 @@ type Routes = {
     login: string;
     register: string;
     category: (category: string) => string;
-    businessDetails: (business_id: string) => string;
+    businessDetails: (businessId: string) => string;
 };
 
 // Define the routes object with type annotation
@@ -19,7 +19,7 @@ const routes: Routes = {
     login: '/login',
     register: '/signup',
     category: (category: string) => `/search/${category}`,
-    businessDetails: (business_id: string) => `/details/${business_id}`,
+    businessDetails: (businessId: string) => `/details/${businessId}`,
 };
 
 export default routes;
