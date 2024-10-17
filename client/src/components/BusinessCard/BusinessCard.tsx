@@ -18,8 +18,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
 
     const handleBookNowClick = () => {
         if (_id) {
-            // Use the routes object for navigation
-            navigate(routes.businessDetails(_id));
+            navigate(routes.businessDetails(_id)); // Use the routes object for navigation
         } else {
             console.error("Business ID is missing. Cannot navigate to the details page.");
         }
@@ -40,16 +39,16 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
             </button>
             <div className={styles.businessCard__content}>
                 <Chip label={category.name} />
-                <h2 className={styles.businessCard__content__name}>{business.name}</h2>
-                <p className={styles.businessCard__content__contact}>
+                <h2 className={styles.businessCard__content__name} data-testid="business-name">
+                    {business.name}
+                </h2>
+                <p className={styles.businessCard__content__contact} data-testid="business-contact">
                     {contactPerson}
                 </p>
-                <p className={styles.businessCard__content__address}>{business.address}</p>
-                <Button size="medium" onClick={handleBookNowClick}>Book now</Button> {/* Use the improved click handler */}
                 <p className={styles.businessCard__content__address} data-testid="business-address">
                     {business.address}
                 </p>
-                <Button size="medium" >Book now</Button>
+                <Button size="medium" onClick={handleBookNowClick}>Book now</Button>
             </div>
         </div>
     );
