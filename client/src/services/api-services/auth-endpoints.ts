@@ -1,3 +1,4 @@
+// auth-endpoints.ts
 import axiosInstance from "./axios-instance";
 import {AuthResponse, LoginPayload, RegisterPayload} from "@/types";
 
