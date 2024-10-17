@@ -1,0 +1,12 @@
+// BookingCardList.module.scss
+.bookingCardList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+@media only screen and (max-width: 900px) {
+  .bookingCardList {
+    grid-template-columns: 1fr;
+  }
+}

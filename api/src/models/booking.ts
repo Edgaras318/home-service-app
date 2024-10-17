@@ -1,9 +1,10 @@
-import mongoose, { Document, Model } from 'mongoose';
+import mongoose, { Document, Model, Types } from 'mongoose';
 import Joi from 'joi';
 
 // Booking Interface
 interface IBooking extends Document {
-    businessId: mongoose.Schema.Types.ObjectId;
+    businessId: Types.ObjectId;
+    ref: "Business"
     date: Date;
     time: string;
     userEmail: string;

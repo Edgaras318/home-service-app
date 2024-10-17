@@ -9,7 +9,7 @@ export type BookingCard = {
     status: string;
 }
 
-export interface Booking {
+export type Booking = {
     _id?: string;
     businessId: string;
     date: Date;

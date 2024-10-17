@@ -1,0 +1,58 @@
+// BookingCard.module.scss
+.bookingCard {
+  display: flex;
+  border: 1px solid #f6f6f6;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  .iconContainer{
+    display: flex;
+    flex-display: column;
+    gap: 0.5rem;
+    align-items: center;
+
+    .icon {
+      color: $primary-color;
+      font-size: 1.2rem;
+    }
+  }
+
+  .bookingImage {
+    width: 120px;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 1rem;
+  }
+
+  .bookingDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    h3 {
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .userName {
+      font-size: 1rem;
+      color: $primary-color;
+    }
+
+    .address,
+    .serviceDate,
+    .serviceTime {
+      font-size: 1rem;
+      color: #a8a8a8;
+    }
+
+    .date,
+    .time{
+      color: #000;
+    }
+  }
+}

@@ -5,7 +5,8 @@ import { sendResponse } from '../utils/responseUtil';
 // GET /bookings/user/:email
 export const getBookingsByUserEmail: RequestHandler = async (req, res): Promise<void> => {
   try {
-    const bookings = await Booking.find({ userEmail: req.params.email });
+    const bookings = await Booking.find({ userEmail: req.params.email })
+        .populate("businessId");
     sendResponse(res, bookings); // Use the standardized response function
   } catch (err) {
     sendResponse(res, undefined, (err as Error).message, 500); // Use the standardized response function
