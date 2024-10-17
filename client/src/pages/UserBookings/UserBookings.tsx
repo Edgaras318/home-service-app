@@ -4,6 +4,7 @@ import TabPanel from "@/components/common/TabPanel/TabPanel";
 import BookingCardList from "@/components/BookingCardList/BookingCardList";
 import styles from './UserBookings.module.scss';
 import { useBookings } from '@/hooks/useBookings'
+import Spinner from "@/components/Spinner/Spinner";
 interface UserBookingParams {
   email?: string;
   [key: string]: string | undefined;
@@ -13,7 +14,7 @@ const UserBookings: React.FC = () => {
   const { email } = useParams<UserBookingParams>();
   const { data: bookings, isLoading, error } = useBookings(email || ''); // Ensure email is defined
 
-  if (isLoading) return <div>Loading your bookings...</div>;
+  if (isLoading) return <Spinner/>;
   if (error) return <div>Error loading bookings: {error.message}</div>;
 
   // Separate bookings into booked and completed based on status
