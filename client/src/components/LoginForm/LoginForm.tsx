@@ -9,10 +9,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { AxiosError } from "axios"; // Ensure AxiosError is imported
 import { errorMessages } from "@/consts/errorMessages";
 import { ErrorResponseData } from "@/types";
+import routes from "@/routes";
+import {useNavigate} from "react-router-dom";
 
 
 const Login: React.FC = () => {
     const { mutate, isPending } = useAuth({ mode: 'login' });
+    const navigate = useNavigate();
 
     const handleSubmit = (values: LoginPayload, formikHelpers: FormikHelpers<LoginPayload>) => {
         mutate(values, {
@@ -33,6 +36,11 @@ const Login: React.FC = () => {
             }
         });
     };
+
+    const handleNavigateToSignUp = () => {
+        navigate(routes.login);
+    };
+
 
     return (
         <div className={styles.loginContainer}>
@@ -78,7 +86,7 @@ const Login: React.FC = () => {
 
                 <div className={styles.signUpLink}>
                     <p>Or Sign Up Using</p>
-                    <a href="/signup">Sign Up</a>
+                    <a onClick={handleNavigateToSignUp}>Sign Up</a>
                 </div>
             </div>
         </div>
