@@ -5,6 +5,7 @@ import styles from "./BusinessCard.module.scss";
 import { Business } from "@/types/businesses";
 import routes from "@/routes";
 import Chip from '@/components/common/Chip/Chip';
+import {useUserStore} from "@/stores/userStore";
 
 type BusinessCardProps = {
     business: Business;
@@ -15,6 +16,8 @@ type BusinessCardProps = {
 const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggleFavorite }) => {
     const { photos, _id, category, contactPerson } = business;
     const navigate = useNavigate();
+    const { user } = useUserStore();
+
 
     const handleBookNowClick = () => {
         if (_id) {
@@ -48,8 +51,9 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
                 <p className={styles.businessCard__content__address} data-testid="business-address">
                     {business.address}
                 </p>
-                <Button size="medium" onClick={handleBookNowClick}>Book now</Button>
-            </div>
+                {user && (
+                    <Button size="medium" onClick={handleBookNowClick}>Book now</Button>
+                )}            </div>
         </div>
     );
 };

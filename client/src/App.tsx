@@ -12,6 +12,7 @@ import routes from '@/routes';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import BusinessDetails from "@/pages/BusinessDetails/BusinessDetails";
 import { SnackbarProvider } from 'notistack';
+import UserBookings from "@/pages/UserBookings/UserBookings";
 // Create router with type safety
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: routes.businessDetails(':business_id'),
         element: <BusinessDetails />,
+      },
+      {
+        path: routes.userBookings(':email'),
+        element: <UserBookings />,
       },
     ],
   },

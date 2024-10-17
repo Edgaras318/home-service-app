@@ -1,6 +1,9 @@
 // UserAvatar.tsx
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./UserAvatar.module.scss";
+import {useUserStore} from "@/stores/userStore";
+import {useNavigate} from "react-router-dom";
+import routes from "@/routes";
 
 interface UserAvatarProps {
   username: string;
@@ -10,9 +13,18 @@ interface UserAvatarProps {
 const UserAvatar: React.FC<UserAvatarProps> = ({ username, onLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const { user } = useUserStore();
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
+  };
+  const navigateToMyBooking = () => {
+    const email = user?.email
+    if(!email) return navigate('/login')
+    const myBookingsPath = routes.userBookings(email);
+    navigate(myBookingsPath)
+    setIsDropdownOpen(false);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -49,11 +61,14 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ username, onLogout }) => {
         {firstLetter}
       </button>
       {isDropdownOpen && (
-        <div className={styles.dropdown} ref={dropdownRef}>
-          <button onClick={onLogout} className={styles.logoutButton}>
-            Logout
-          </button>
-        </div>
+          <div className={styles.dropdown} ref={dropdownRef}>
+            <button onClick={navigateToMyBooking} className={styles.dropdownItem}>
+              My Booking
+            </button>
+            <button onClick={onLogout} className={styles.dropdownItem}>
+              Logout
+            </button>
+          </div>
       )}
     </div>
   );
