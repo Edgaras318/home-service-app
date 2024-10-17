@@ -14,7 +14,7 @@ const BusinessDetails: React.FC = () => {
     useEffect(() => {
         if (business_id) {
             ApiService.getBusinessById(business_id)
-                .then(response => setBusiness(response.data))
+                .then(response => setBusiness(response.data.data))
                 .catch(error => console.error('Error fetching business details:', error));
         }
     }, [business_id]);
