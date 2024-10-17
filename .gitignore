@@ -30,6 +30,7 @@ api/.env
 api/.idea/*.xml
 api/.idea
 api/dist/
+api/.vercel
 
 .idea/*.xml
 .idea

@@ -9,7 +9,8 @@
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "deploy": "npm run build && vercel --prod"
   },
   "keywords": [],
   "author": "",

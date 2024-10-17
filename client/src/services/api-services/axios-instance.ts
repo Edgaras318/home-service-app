@@ -1,8 +1,11 @@
 import axios, { InternalAxiosRequestConfig, AxiosHeaders } from "axios";
+import { PROD } from "@/consts/environment";
+
+const baseURL = PROD ? import.meta.env.VITE_SERVER_URL : "http://localhost:5001/api/";
 
 // Create an axios instance
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5001/api',
+    baseURL: baseURL,
     timeout: 10000, // Set your timeout as needed
 });
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './BookingCard.module.scss';
-import { BookingCard } from '@/types/bookings';
+import {BookingCard as BookingCardType} from "@/types/bookings";
 import { FaRegUser } from "react-icons/fa";
 import { HiOutlineLocationMarker, HiOutlineClock } from "react-icons/hi";
 import { LuCalendar } from "react-icons/lu";
 
-const BookingCard: React.FC<BookingCard> = ({
+const BookingCard: React.FC<BookingCardType> = ({
                                                  businessId,
                                                  date,
                                                  time,

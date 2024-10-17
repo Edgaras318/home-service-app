@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import { Calendar } from 'react-calendar';
 import SelectableChip from "@/components/SelectableChip/SelectableChip";
 import Button from "@/components/common/Button/Button";
-import { ErrorResponseData } from "@/types/errors";
+import {ErrorResponse} from "@/types/errors";
 import {useCreateBooking} from '@/hooks/useCreateBooking'
 import { useSnackbar } from "notistack";
 import { useParams} from "react-router-dom";
@@ -78,9 +78,9 @@ const BookSidebarDialog: React.FC<BookSidebarDialogProps> = ({ isOpen, onClose }
             handleClose(); // Close dialog on successful booking
             setError("");
         } catch (error) {
-            const errorMessage = error as ErrorResponseData;
+            const errorMessage = error as ErrorResponse;
             console.error(errorMessage);
-            setError(errorMessage.response?.data.message ?? "");
+            setError(errorMessage.response?.data?.message ?? "");
         } finally {
             setIsSubmitting(false);
         }
