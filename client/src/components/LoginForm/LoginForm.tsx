@@ -38,7 +38,7 @@ const Login: React.FC = () => {
     };
 
     const handleNavigateToSignUp = () => {
-        navigate(routes.login);
+        navigate(routes.register);
     };
 
 
