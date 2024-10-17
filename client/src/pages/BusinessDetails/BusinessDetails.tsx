@@ -6,6 +6,7 @@ import BusinessInfo from '@/components/BusinessInfo/BusinessInfo';
 import BusinessGallery from '@/components/BusinessGallery/BusinessGallery';
 import BusinessSidebar from '@/components/BusinessSidebar/BusinessSidebar';
 import styles from './BusinessDetails.module.scss';
+import Spinner from "@/components/Spinner/Spinner";
 
 const BusinessDetails: React.FC = () => {
     const { business_id } = useParams<{ business_id?: string }>();
@@ -20,7 +21,7 @@ const BusinessDetails: React.FC = () => {
     }, [business_id]);
 
     if (!business) {
-        return <div>Loading...</div>;
+        return <Spinner/>;
     }
 
     return (
