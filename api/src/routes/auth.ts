@@ -4,13 +4,9 @@ import { login, register } from "../controllers/auth";
 const router = express.Router();
 
 // POST /auth/login
-router.post('/login', async (req: Request, res: Response) => {
-    await login(req, res);
-});
+router.post('/login', login);
 
 // POST /auth/register
-router.post('/register', async (req: Request, res: Response) => {
-    await register(req, res);
-});
+router.post('/register', register);
 
 export default router;

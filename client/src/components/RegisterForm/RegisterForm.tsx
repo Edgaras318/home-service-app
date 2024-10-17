@@ -1,40 +1,39 @@
-// RegisterForm.tsx
 import React from "react";
-import { useUserStore } from "@/stores/userStore";
-import { useNavigate } from "react-router-dom";
-import InputField from "@/components/common/InputField/InputField";
-import styles from "./RegisterForm.module.scss";
-import Button from "@/components/common/Button/Button";
-import { ApiService } from "@/services/api-services";
-import { ErrorResponseData, FormDataRegister } from '@/types';
-import { AxiosError } from "axios";
 import { Formik, Form, Field, FormikHelpers } from 'formik';
+import InputField from "@/components/common/InputField/InputField";
+import Button from "@/components/common/Button/Button";
+import styles from "./RegisterForm.module.scss";
 import { registerValidationSchema, registerInitialValues } from '@/schemas/authValidationSchemas';
-import { errorMessages } from '@/consts/errorMessages'; // Import the error messages
+import { errorMessages } from '@/consts/errorMessages';
+import {ErrorResponseData, FormDataRegister} from '@/types';
+import { useAuth } from '@/hooks/useAuth';
+import {AxiosError} from "axios";  // Import the useAuth hook
 
 const RegisterForm: React.FC = () => {
-    const setUser = useUserStore((state) => state.setUser);
-    const navigate = useNavigate();
+    const { mutate, isPending } = useAuth({ mode: 'register' });  // Use the hook in register mode
 
-    const handleSubmit = async (values: FormDataRegister, { setSubmitting, setErrors }: FormikHelpers<FormDataRegister>) => {
+    const handleSubmit = (values: FormDataRegister, formikHelpers: FormikHelpers<FormDataRegister>) => {
         if (values.password !== values.confirmPassword) {
-            setErrors({ confirmPassword: errorMessages.authentication.passwordMismatch });
-            setSubmitting(false);
+            formikHelpers.setErrors({ confirmPassword: errorMessages.authentication.passwordMismatch });
+            formikHelpers.setSubmitting(false);
             return;
         }
 
-        try {
-            const userData = await ApiService.register(values.name, values.age, values.email, values.password);
-            setUser(userData);
-            navigate("/");
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            const errorMessage = axiosError.response?.data as ErrorResponseData;
+        mutate(values, {
+            onSettled: () => {
+                formikHelpers.setSubmitting(false);
+            },
+            onError: (error) => {
+                const axiosError = error as AxiosError; // Assert the error type to AxiosError
+                const errorResponse = axiosError.response?.data as ErrorResponseData;
 
-            setErrors({ confirmPassword: errorMessage?.message || errorMessages.authentication.defaultError });
-        } finally {
-            setSubmitting(false);
-        }
+                formikHelpers.setErrors({
+                    email: '',
+                    password: '',
+                    confirmPassword: errorResponse?.message || errorMessages.authentication.defaultError,
+                });
+            },
+        });
     };
 
     return (
@@ -88,8 +87,8 @@ const RegisterForm: React.FC = () => {
                                 label="Confirm Password"
                                 error={touched.confirmPassword && errors.confirmPassword}
                             />
-                            <Button type="submit" disabled={isSubmitting} fullWidth>
-                                {isSubmitting ? "Registering..." : "Register"}
+                            <Button type="submit" disabled={isSubmitting || isPending} fullWidth>
+                                {isSubmitting || isPending ? "Registering..." : "Register"}
                             </Button>
                         </Form>
                     )}

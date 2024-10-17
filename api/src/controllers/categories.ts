@@ -1,31 +1,33 @@
 import { Category } from '../models/category';
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
+import { sendResponse } from '../utils/responseUtil'; // Import the utility function
 
 // GET /categories
-export const getAllCategories = async (req: Request, res: Response): Promise<Response> => {
+export const getAllCategories: RequestHandler = async (req, res) => {
   try {
     const categories = await Category.find();
-    return res.status(200).json(categories); // Explicitly return the response
+    sendResponse(res, categories); // Use the standardized response function
   } catch (err) {
-    return res.status(500).json({ message: err instanceof Error ? err.message : 'Internal Server Error' });
+    sendResponse(res, undefined, err instanceof Error ? err.message : 'Internal Server Error', 500);
   }
 };
 
 // POST /categories
-export const createCategory = async (req: Request, res: Response): Promise<Response> => {
+export const createCategory: RequestHandler = async (req, res) => {
   const { name, backgroundColor, iconUrl } = req.body;
 
-  // Optionally, you can add validation here for the request body
+  // Validation for the request body
   if (!name || !backgroundColor || !iconUrl) {
-    return res.status(400).json({ message: 'All fields are required.' }); // Explicitly return the response
+    sendResponse(res, undefined, 'All fields are required.', 400); // Use the standardized response function
+    return;
   }
 
   const category = new Category({ name, backgroundColor, iconUrl });
 
   try {
     const savedCategory = await category.save();
-    return res.status(201).json(savedCategory); // Explicitly return the response
+    sendResponse(res, savedCategory, 'Category created successfully.', 201); // Use the standardized response function
   } catch (err) {
-    return res.status(400).json({ message: err instanceof Error ? err.message : 'Bad Request' });
+    sendResponse(res, undefined, err instanceof Error ? err.message : 'Bad Request', 400);
   }
 };

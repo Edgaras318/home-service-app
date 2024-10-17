@@ -1,30 +1,19 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApiService } from "@/services/api-services";
+import { fetchCategories } from '@/services/api-services/categories-api'; // Import the function from the new file
 import { Category } from '@/types/categories';
-import { Business } from '@/types/businesses';
 import { QueryKeys } from '@/consts/queryKeys'; // Import the query keys
-
-// Fetching categories from the API
-const fetchCategories = async (): Promise<Category[]> => {
-    const response = await ApiService.getCategories();
-    if (response.data && Array.isArray(response.data)) {
-        return response.data;
-    } else {
-        throw new Error('Unexpected data structure');
-    }
-};
 
 // Custom hook for categories
 export const useCategories = () => {
     const queryClient = useQueryClient(); // Get the query client
 
-    // Using useQuery to fetch data
+    // Using useQuery to fetch categories data
     const query = useQuery<Category[], Error>({
         queryKey: QueryKeys.CATEGORIES, // Use the constant
-        queryFn: fetchCategories,
-        staleTime: 1000 * 60 * 5,
-        gcTime: 1000 * 60 * 10,
-        retry: 1,
+        queryFn: fetchCategories, // Use the fetchCategories function to handle API call and validation
+        staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+        gcTime: 1000 * 60 * 10, // Keep inactive queries in cache for 10 minutes
+        retry: 1, // Retry once on failure
     });
 
     return {

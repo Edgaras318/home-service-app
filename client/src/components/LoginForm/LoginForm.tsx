@@ -1,34 +1,37 @@
-// LoginForm.tsx
 import React from 'react';
-import { useUserStore } from '@/stores/userStore';
-import { useNavigate } from 'react-router-dom';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import InputField from "@/components/common/InputField/InputField";
 import styles from './LoginForm.module.scss';
 import Button from "@/components/common/Button/Button";
-import { ApiService } from "@/services/api-services";
-import { AuthResponse, ErrorResponseData, LoginPayload } from "@/types";
-import { AxiosError } from "axios";
-import { Formik, Form, Field, FormikHelpers } from 'formik';
 import { loginValidationSchema, loginInitialValues } from '@/schemas/authValidationSchemas';
-import { errorMessages } from '@/consts/errorMessages'; // Import the error messages
+import { LoginPayload } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
+import { AxiosError } from "axios"; // Ensure AxiosError is imported
+import { errorMessages } from "@/consts/errorMessages";
+import { ErrorResponseData } from "@/types";
+
 
 const Login: React.FC = () => {
-    const setUser = useUserStore((state) => state.setUser);
-    const navigate = useNavigate();
+    const { mutate, isPending } = useAuth({ mode: 'login' });
 
-    const handleSubmit = async (values: LoginPayload, { setSubmitting, setErrors }: FormikHelpers<LoginPayload>) => {
-        try {
-            const userData: AuthResponse = await ApiService.login(values.email, values.password);
-            setUser(userData);
-            navigate('/');
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            const errorMessage = axiosError.response?.data as ErrorResponseData;
+    const handleSubmit = (values: LoginPayload, formikHelpers: FormikHelpers<LoginPayload>) => {
+        mutate(values, {
+            onSettled: () => {
+                formikHelpers.setSubmitting(false);
+            },
+            onError: (error) => {
+                const axiosError = error as AxiosError; // Assert the error type to AxiosError
+                const errorResponse = axiosError.response?.data as ErrorResponseData;
 
-            setErrors({ email: '', password: errorMessage?.message || errorMessages.authentication.defaultError });
-        } finally {
-            setSubmitting(false);
-        }
+                formikHelpers.setErrors({
+                    email: '',
+                    password: errorResponse?.message || errorMessages.authentication.defaultError
+                });
+            },
+            onSuccess: () => {
+                formikHelpers.resetForm(); // Reset form on successful login
+            }
+        });
     };
 
     return (
@@ -49,6 +52,7 @@ const Login: React.FC = () => {
                                 as={InputField}
                                 label="Email"
                                 error={touched.email && errors.email}
+                                aria-label="Email input"
                             />
                             <Field
                                 name="password"
@@ -57,9 +61,10 @@ const Login: React.FC = () => {
                                 as={InputField}
                                 label="Password"
                                 error={touched.password && errors.password}
+                                aria-label="Password input"
                             />
-                            <Button type="submit" disabled={isSubmitting} fullWidth>
-                                {isSubmitting ? "Loading..." : "Login"}
+                            <Button type="submit" disabled={isSubmitting || isPending} fullWidth>
+                                {isSubmitting || isPending ? "Loading..." : "Login"}
                             </Button>
                         </Form>
                     )}

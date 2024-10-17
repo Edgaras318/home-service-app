@@ -2,4 +2,5 @@
 export const QueryKeys = {
     CATEGORIES: ['categories'],
     BUSINESSES: ['businesses'],
+    USERS: ['users'],
 };

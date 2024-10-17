@@ -26,11 +26,12 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
     };
 
     return (
-        <div className={styles.businessCard}>
+        <div className={styles.businessCard} data-testid="business-card">
             <img
                 src={photos[0]}
                 alt={business.name}
                 className={styles.businessCard__image}
+                data-testid="business-image" // Add test ID for the image
             />
             <button onClick={() => toggleFavorite(_id)} className={styles.favoriteButton}>
                 <span className={isFavorite ? styles.favorite : styles.notFavorite}>
@@ -45,6 +46,10 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
                 </p>
                 <p className={styles.businessCard__content__address}>{business.address}</p>
                 <Button size="medium" onClick={handleBookNowClick}>Book now</Button> {/* Use the improved click handler */}
+                <p className={styles.businessCard__content__address} data-testid="business-address">
+                    {business.address}
+                </p>
+                <Button size="medium" >Book now</Button>
             </div>
         </div>
     );

@@ -63,15 +63,16 @@ userSchema.pre<IUser>('save', async function (next) {
 
     if (error) {
         console.log(error); // eslint-disable-line no-console
-        next(new Error(error.details[0].message));
-    } else {
-        // Hash password only if it's modified
-        if (this.isModified('password')) {
-            const salt = await bcrypt.genSalt(10);
-            this.password = await bcrypt.hash(this.password, salt);
-        }
-        next();
+        return next(new Error(error.details[0].message)); // Return early on error
     }
+
+    // Hash password only if it's modified
+    if (this.isModified('password')) {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    }
+
+    next(); // Proceed to the next middleware
 });
 
 // Compare entered password with hashed password

@@ -6,13 +6,16 @@ export type User = {
     age: string;
 }
 
-// Define the AuthResponse type
-export type AuthResponse = {
-    status: string;
-    token: string;
-    user: User;
+export interface AuthData {
+    token: string;         // JWT token
+    user: User;           // User information
 }
 
+export interface AuthResponse {
+    success: boolean;      // Indicates success or failure of the login
+    message: string;       // Message related to the response
+    data: AuthData;       // Contains token and user information
+}
 // Define the LoginPayload type
 export type LoginPayload = {
     email: string;

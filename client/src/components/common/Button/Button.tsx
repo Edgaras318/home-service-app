@@ -18,13 +18,17 @@ const Button: React.FC<ButtonProps> = ({
   children,
   fullWidth = false,
 }) => {
+  // Construct the button class names dynamically
+  const buttonClasses = `${styles["custom-button"]} ${styles[size]} ${
+      fullWidth ? styles["full-width"] : ""
+  }`.trim();
+
+
   return (
     <button
       type={type}
       disabled={disabled}
-      className={`${styles["custom-button"]} ${styles[size]} ${
-        fullWidth ? styles["full-width"] : ""
-      }`}
+      className={buttonClasses}
       onClick={onClick}
       aria-label={typeof children === "string" ? children : undefined}
     >

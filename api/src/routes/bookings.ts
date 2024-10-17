@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import {
     getBookingsByUserEmail,
     createBooking,
@@ -9,19 +9,13 @@ import authMiddleware from '../middlewares/authMiddleware';
 const router = express.Router();
 
 // GET /bookings/user/:email
-router.get('/user/:email', async (req: Request, res: Response) => {
-    await getBookingsByUserEmail(req, res);
-});
+router.get('/user/:email', getBookingsByUserEmail);
 
 // POST /bookings
-router.post('/', authMiddleware, async (req: Request, res: Response) => {
-    await createBooking(req, res);
-});
+router.post('/', authMiddleware, createBooking);
 
 // DELETE /bookings/:id
-router.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
-    await deleteBooking(req, res);
-});
+router.delete('/:id', authMiddleware, deleteBooking);
 
 // Export the router
 export default router;
