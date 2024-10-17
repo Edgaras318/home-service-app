@@ -1,0 +1,22 @@
+.galleryContainer {
+  margin-top: 2rem;
+
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .galleryImages {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    img {
+      width: 200px;
+      height: 120px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+}

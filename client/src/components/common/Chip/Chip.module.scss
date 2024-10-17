@@ -1,0 +1,13 @@
+// src/components/Chip/Chip.module.scss
+
+.chip {
+  font-size: 0.9em;
+  color: $primary-color;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  background-color: #e5ddfb;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+}

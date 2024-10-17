@@ -13,10 +13,11 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        silenceDeprecations: ["legacy-js-api"],
         // This allows you to use the _variables.scss file in all SCSS files
-        additionalData: `@import "@/assets/styles/_variables.scss";`,
+        // additionalData: `@import "@/assets/styles/_variables.scss";`,
         // If you are using Vite 4 or newer, use this format:
-        // additionalData: `@use "@/assets/styles/_variables.scss" as *;`,
+        additionalData: `@use "@/assets/styles/_variables.scss" as *;`,
       },
     },
   },
