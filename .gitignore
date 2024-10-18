@@ -23,6 +23,7 @@ client/*.njsproj
 client/*.sln
 client/*.sw?
 client/.env
+client/.vercel
 
 # API
 api/node_modules
@@ -30,6 +31,7 @@ api/.env
 api/.idea/*.xml
 api/.idea
 api/dist/
+api/.vercel
 
 .idea/*.xml
 .idea
