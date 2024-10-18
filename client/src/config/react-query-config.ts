@@ -5,6 +5,8 @@ import { useUserStore } from '@/stores/userStore';  // Adjust the path as necess
 // Global error handler for React Query
 const handleAuthError = (error: any) => {
     const clearUser = useUserStore.getState().clearUser; // Access Zustand's clearUser function
+    window.location.href = '/login'; // Change to your login route
+
     if (error?.response?.status === 401 || error?.response?.status === 403) {
         // If error status is 401 (unauthorized) or 403 (forbidden), log the user out
         clearUser(); // Clear the user/token from Zustand store
