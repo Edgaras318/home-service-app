@@ -23,6 +23,7 @@ client/*.njsproj
 client/*.sln
 client/*.sw?
 client/.env
+client/.vercel
 
 # API
 api/node_modules
