@@ -15,7 +15,8 @@ const TabPanel: React.FC<TabPanelProps> = ({ tabs }) => {
                 {tabs.map((tab, index) => (
                     <button
                         key={index}
-                        className={`${styles.tabButton} ${index === activeTab ? styles.active : ''}`}
+                        data-testid={`tab-button-${index}`}  // Add data-testid here
+                        className={styles.tabButton}
                         onClick={() => setActiveTab(index)}
                     >
                         {tab.title}
