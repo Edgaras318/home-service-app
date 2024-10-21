@@ -1,4 +1,4 @@
 import "@testing-library/jest-dom";
-// jest.mock("./src/consts/environment", () => ({
-//     PROD: "development",
-// }));
+jest.mock("./src/consts/environment", () => ({
+    PROD: "development",
+}));

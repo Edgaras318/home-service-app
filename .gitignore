@@ -24,6 +24,8 @@ client/*.sln
 client/*.sw?
 client/.env
 client/.vercel
+client/coverage/lcov-report/*
+client/coverage/*
 
 # API
 api/node_modules

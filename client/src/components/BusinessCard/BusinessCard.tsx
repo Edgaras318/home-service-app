@@ -5,7 +5,7 @@ import styles from "./BusinessCard.module.scss";
 import { Business } from "@/types/businesses";
 import routes from "@/routes";
 import Chip from '@/components/common/Chip/Chip';
-import {useUserStore} from "@/stores/userStore";
+import { useUserStore } from "@/stores/userStore";
 
 type BusinessCardProps = {
     business: Business;
@@ -18,7 +18,6 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
     const navigate = useNavigate();
     const { user } = useUserStore();
 
-
     const handleBookNowClick = () => {
         if (_id) {
             navigate(routes.businessDetails(_id)); // Use the routes object for navigation
@@ -28,12 +27,11 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
     };
 
     return (
-        <div className={styles.businessCard} data-testid="business-card">
+        <div className={styles.businessCard}>
             <img
                 src={photos[0]}
                 alt={business.name}
                 className={styles.businessCard__image}
-                data-testid="business-image" // Add test ID for the image
             />
             <button onClick={() => toggleFavorite(_id)} className={styles.favoriteButton}>
                 <span className={isFavorite ? styles.favorite : styles.notFavorite}>
@@ -42,18 +40,19 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, isFavorite, toggl
             </button>
             <div className={styles.businessCard__content}>
                 <Chip label={category.name} />
-                <h2 className={styles.businessCard__content__name} data-testid="business-name">
+                <h2 className={styles.businessCard__content__name}>
                     {business.name}
                 </h2>
-                <p className={styles.businessCard__content__contact} data-testid="business-contact">
+                <p className={styles.businessCard__content__contact}>
                     {contactPerson}
                 </p>
-                <p className={styles.businessCard__content__address} data-testid="business-address">
+                <p className={styles.businessCard__content__address}>
                     {business.address}
                 </p>
                 {user && (
                     <Button size="medium" onClick={handleBookNowClick}>Book now</Button>
-                )}            </div>
+                )}
+            </div>
         </div>
     );
 };

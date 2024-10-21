@@ -20,6 +20,7 @@ const UrlIcon: React.FC<UrlIconProps> = ({
                                          }) => {
     return (
         <div
+            data-testid="url-icon" // Add data-testid here
             className={styles.icon}
             style={{
                 maskImage: `url(${url})`,

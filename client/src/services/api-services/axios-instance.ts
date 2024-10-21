@@ -1,7 +1,9 @@
 import axios, { InternalAxiosRequestConfig, AxiosHeaders } from "axios";
 import { PROD } from "@/consts/environment";
+import { useUserStore } from '@/stores/userStore'; // Adjust the path as necessary
+import { AxiosError } from 'axios';
 
-const baseURL = PROD ? import.meta.env.VITE_SERVER_URL : "http://localhost:5001/api/";
+const baseURL = PROD ? process.env.VITE_SERVER_URL : "http://localhost:5001/api/";
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -36,6 +38,22 @@ axiosInstance.interceptors.request.use(
     (error) => {
         // Handle the error
         return Promise.reject(error);
+    }
+);
+
+// Add a response interceptor
+axiosInstance.interceptors.response.use(
+    (response) => response, // Pass through successful responses
+    (error: AxiosError) => {
+        const clearUser = useUserStore.getState().clearUser;
+
+        // Check if the error is an AxiosError and if the status is 401 or 403
+        if (error.isAxiosError && (error.response?.status === 401 || error.response?.status === 403)) {
+            clearUser(); // Clear user state in Zustand
+            // window.location.href = '/login'; // Redirect to login page
+        }
+
+        return Promise.reject(error); // Reject other errors
     }
 );
 
