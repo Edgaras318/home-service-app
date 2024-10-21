@@ -1,17 +1,16 @@
 import React from 'react';
 import styles from './BookingCard.module.scss';
-import {BookingCard as BookingCardType} from "@/types/bookings";
+import { BookingCard as BookingCardType } from "@/types/bookings";
 import { FaRegUser } from "react-icons/fa";
 import { HiOutlineLocationMarker, HiOutlineClock } from "react-icons/hi";
 import { LuCalendar } from "react-icons/lu";
 
 const BookingCard: React.FC<BookingCardType> = ({
-                                                 businessId,
-                                                 date,
-                                                 time,
-                                                 userName,
-                                             }) => {
-
+                                                    businessId,
+                                                    date,
+                                                    time,
+                                                    userName,
+                                                }) => {
     return (
         <div className={styles.bookingCard}>
             {businessId?.photos.length && (
@@ -34,14 +33,17 @@ const BookingCard: React.FC<BookingCardType> = ({
                 <div className={styles.iconContainer}>
                     <LuCalendar className={styles.icon} />
                     <p className={styles.serviceDate}>
-                        <span>Service on:</span> <span
-                        className={styles.date}>{new Date(date).toLocaleDateString()}</span>
+                        <span>Service on:</span>{" "}
+                        <span className={styles.date}>
+                            {new Date(date).toLocaleDateString()}
+                        </span>
                     </p>
                 </div>
                 <div className={styles.iconContainer}>
                     <HiOutlineClock className={styles.icon} />
                     <p className={styles.serviceTime}>
-                        <span>Service on:</span> <span className={styles.time}>{time}</span>
+                        <span>Service on:</span>{" "}
+                        <span className={styles.time}>{time}</span>
                     </p>
                 </div>
             </div>
