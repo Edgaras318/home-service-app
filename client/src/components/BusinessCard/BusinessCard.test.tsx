@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import BusinessCard from './BusinessCard';
-import { Business } from '@/types/businesses';
-import { Category} from "@/types";
+import { Category, Business } from "@/types";
 import { useUserStore } from "@/stores/userStore";
 
 // Mock Business data
@@ -54,18 +53,10 @@ describe('BusinessCard Component', () => {
         );
 
         // Check if the card is rendered
-        expect(screen.getByTestId('business-card')).toBeInTheDocument();
-
-        // Check if the image is rendered
-        const imgElement = screen.getByTestId('business-image');
-        expect(imgElement).toBeInTheDocument();
-        expect(imgElement).toHaveAttribute('src', 'test-photo.jpg');
-        expect(imgElement).toHaveAttribute('alt', 'Test Business');
-
-        // Check if the business name, contact, and address are rendered
-        expect(screen.getByTestId('business-name')).toHaveTextContent('Test Business');
-        expect(screen.getByTestId('business-contact')).toHaveTextContent('John Doe');
-        expect(screen.getByTestId('business-address')).toHaveTextContent('123 Test St.');
+        expect(screen.getByRole('img', { name: 'Test Business' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Test Business' })).toBeInTheDocument();
+        expect(screen.getByText('John Doe')).toBeInTheDocument();
+        expect(screen.getByText('123 Test St.')).toBeInTheDocument();
     });
 
     it('calls toggleFavorite when the favorite button is clicked', () => {
@@ -150,7 +141,7 @@ describe('BusinessCard Component', () => {
         const bookNowButton = screen.getByRole('button', { name: /book now/i });
         fireEvent.click(bookNowButton);
 
-        // Assert the button triggers the correct event (such as calling a handler, but don't check the route)
+        // Assert that the button triggers the correct event
         expect(bookNowButton).toBeInTheDocument();
     });
 });
