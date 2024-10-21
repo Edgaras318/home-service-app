@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import BookingCard from './BookingCard';
-import { BookingCard as BookingCardType } from "@/types/bookings";
+import { BookingCard as BookingCardType, Category, Business } from "@/types";
 
 // Mocking a category object with all required properties
-const mockCategory = {
+const mockCategory: Category = {
     _id: 'cat1',
     iconUrl: 'https://example.com/icon.png',
     name: 'Services',
@@ -12,7 +12,7 @@ const mockCategory = {
 };
 
 // Mocking a businessId object with all required properties
-const mockBusinessId = {
+const mockBusinessId: Business = {
     _id: '1',
     name: 'Test Business',
     address: '123 Test Street',

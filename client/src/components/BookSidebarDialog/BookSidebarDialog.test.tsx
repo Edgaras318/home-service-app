@@ -4,6 +4,7 @@ import BookSidebarDialog from './BookSidebarDialog';
 import { useCreateBooking } from '@/hooks/useCreateBooking';
 import { useSnackbar } from 'notistack';
 import { useUserStore } from '@/stores/userStore';
+import { User } from '@/types';
 
 // Mock dependencies
 jest.mock('@/hooks/useCreateBooking', () => ({
@@ -21,16 +22,15 @@ describe('BookSidebarDialog', () => {
         onClose: mockOnClose,
     };
 
-    const mockUser = {
+    const mockUser: User = {
         _id: 'user123',
         email: 'test@example.com',
         name: 'John Doe',
-        age: '30', // Ensure age is a string if required by your User type
+        age: '30',
     };
 
     beforeEach(() => {
         jest.clearAllMocks();
-        jest.spyOn(console, 'error').mockImplementation(() => {}); // Suppress console.error output
 
         (useSnackbar as jest.Mock).mockReturnValue({ enqueueSnackbar: jest.fn() });
         useUserStore.setState({ user: mockUser });
@@ -40,65 +40,75 @@ describe('BookSidebarDialog', () => {
         });
     });
 
-    afterEach(() => {
-        jest.restoreAllMocks(); // Restore console.error to its original implementation
-    });
+    const renderComponent = (props = mockProps) => {
+        return render(<BookSidebarDialog {...props} />);
+    };
 
-    test('renders dialog when open', () => {
-        render(<BookSidebarDialog {...mockProps} />);
+    test('renders the dialog when open', () => {
+        renderComponent();
         expect(screen.getByRole('heading', { name: /Book a Service/i })).toBeInTheDocument();
         expect(screen.getByText(/Select Date and Timeslot to book a service/i)).toBeInTheDocument();
     });
 
-    test('closes the dialog on clicking close button', async () => {
-        render(<BookSidebarDialog {...mockProps} />);
+    test('closes the dialog on clicking the close button', async () => {
+        renderComponent();
         fireEvent.click(screen.getByRole('button', { name: /×/i })); // Close button
         await waitFor(() => expect(mockOnClose).toHaveBeenCalledTimes(1));
     });
 
-    test('shows error if date or time slot is not selected', async () => {
-        render(<BookSidebarDialog {...mockProps} />);
+    test('displays an error if date or time slot is not selected', async () => {
+        renderComponent();
         fireEvent.click(screen.getByText(/Confirm/i));
         expect(await screen.findByText(/Please select both date and time slot/i)).toBeInTheDocument();
     });
 
-    test('selecting a time slot updates the state', () => {
-        render(<BookSidebarDialog {...mockProps} />);
+    test('updates the state when a time slot is selected', () => {
+        renderComponent();
 
         // Select the time slot
         fireEvent.click(screen.getByText('10:00 AM'));
 
-        // Assert that the selected time slot is set in state
-        expect(screen.getByText('10:00 AM')).toBeInTheDocument(); // Check if the time slot is still there after selection
+        // Check if the selected time slot is displayed correctly
+        expect(screen.getByText('10:00 AM')).toBeInTheDocument();
     });
 
     test('submits the booking form successfully', async () => {
-        const mockCreateBooking = jest.fn();
+        const mockCreateBooking = jest.fn().mockResolvedValue({}); // Simulate a successful response
         (useCreateBooking as jest.Mock).mockReturnValue({ mutateAsync: mockCreateBooking });
-        render(<BookSidebarDialog {...mockProps} />);
+        renderComponent();
 
-        // Set up the state by selecting a time slot
+        // Select a time slot
         fireEvent.click(screen.getByText('10:00 AM'));
 
         // Trigger submit
         fireEvent.click(screen.getByText(/Confirm/i));
 
         await waitFor(() => {
-            expect(mockCreateBooking).toHaveBeenCalledTimes(1); // Confirm booking function was called
+            expect(mockCreateBooking).toHaveBeenCalledTimes(1); // Ensure the booking function was called
             expect(mockOnClose).toHaveBeenCalledTimes(1); // Ensure dialog closes
         });
     });
 
-    test('handles API error during booking', async () => {
+    test('displays an error message if the booking API call fails', async () => {
+        const mockErrorMessage = 'Error creating booking';
         const mockCreateBooking = jest.fn().mockRejectedValue({
-            response: { data: { message: 'Error creating booking' } },
+            response: { data: { message: mockErrorMessage } },
         });
         (useCreateBooking as jest.Mock).mockReturnValue({ mutateAsync: mockCreateBooking });
-        render(<BookSidebarDialog {...mockProps} />);
 
+        // Suppress console.error for this specific test
+        const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        renderComponent();
+
+        // Select a time slot and attempt to confirm the booking
         fireEvent.click(screen.getByText('10:00 AM'));
         fireEvent.click(screen.getByText(/Confirm/i));
 
-        await waitFor(() => expect(screen.getByText(/Error creating booking/i)).toBeInTheDocument());
+        // Wait for the error message to appear
+        await waitFor(() => expect(screen.getByText(mockErrorMessage)).toBeInTheDocument());
+
+        // Restore console.error to its original implementation
+        consoleErrorMock.mockRestore();
     });
 });
