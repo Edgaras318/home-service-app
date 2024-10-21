@@ -1,0 +1,48 @@
+// SimilarBusinessCard.module.scss
+.similarBusinessCard {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  align-items: stretch;
+  max-width: 30rem;
+
+  &__image {
+    width: 80px;
+    height: 100%;
+    min-height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 0.5rem;
+
+    span {
+
+    }
+  }
+
+  .businessName {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .contactPerson {
+    font-size: 0.9rem;
+    color: $primary-color;
+  }
+
+  .address {
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    color: #555;
+  }
+}

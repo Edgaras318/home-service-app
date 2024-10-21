@@ -1,0 +1,90 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  z-index: 1000;
+}
+
+.dialog {
+  background: white;
+  padding: 1.5rem;
+  width: 350px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.dialog.slideIn {
+  transform: translateX(0);
+}
+
+.dialog.slideOut {
+  transform: translateX(100%);
+}
+
+.dialogContent {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.dialogFooter {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.chipContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.titleMain {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1rem;
+  margin: 1.5rem 0;
+}
+
+.subtitle {
+  color: #a8a8a8;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+.calendarSection, .timeSlotSection {
+  margin-bottom: 1rem;
+}
+.error {
+  color: #ff4d4f; /* Bright red color to indicate error */
+  background-color: #fff1f0; /* Light red background */
+  border: 1px solid #ff4d4f; /* Red border */
+  padding: 10px; /* Add some padding around the error message */
+  border-radius: 4px; /* Slightly round the corners */
+  font-weight: bold; /* Make the text bold */
+  margin-top: 10px; /* Add some space above the error */
+}

@@ -12,6 +12,7 @@
 
   p {
     font-size: 1.2rem;
+    text-transform: capitalize;
   }
 
   &:hover,
@@ -21,11 +22,6 @@
     color: $card-color;
     background-color: $card-background-color;
     text-decoration: none;
-    border-color: #beaaf5;
+    border-color: $card-border-color;
     }
   }
-
-  .icon {
-    color: var(--card-color);
-  }
-

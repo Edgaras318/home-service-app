@@ -1,0 +1,35 @@
+
+// Chip.module.scss
+.chip {
+  padding: 0.5rem 0.5rem; // Adjust padding as necessary
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: transparent; // No background by default
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #333; // Neutral text color
+  min-width: 85px; // Set a minimum width for uniformity (adjust as needed)
+  text-align: center; // Center text for better appearance
+  display: inline-flex; // Use inline-flex to allow flexible sizing
+  align-items: center; // Vertically center items
+  justify-content: center; // Horizontally center items
+
+  &:hover {
+    background: $hover-background;
+    color: white;
+    border: 1px solid $primary-color;
+  }
+}
+
+.selected {
+  background-color: $primary-color; // Selected chip has a primary background
+  color: white; // White text when selected
+  border: 1px solid $primary-color;
+}
+
+.crossed {
+  text-decoration: line-through; // Cross out crossed time slots
+  color: #999; // Lighter color for crossed time slots
+  border-color: #999;
+  pointer-events: none; // Disable clicking on booked slots
+}

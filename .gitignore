@@ -15,6 +15,7 @@ client/*.local
 client/.vscode/*
 !client/.vscode/extensions.json
 client/.idea/
+client/.idea/*.xml
 client/.DS_Store
 client/*.suo
 client/*.ntvs*
@@ -22,7 +23,17 @@ client/*.njsproj
 client/*.sln
 client/*.sw?
 client/.env
+client/.vercel
+client/coverage/lcov-report/*
+client/coverage/*
 
 # API
 api/node_modules
 api/.env
+api/.idea/*.xml
+api/.idea
+api/dist/
+api/.vercel
+
+.idea/*.xml
+.idea
