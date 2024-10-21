@@ -3,7 +3,7 @@ import { PROD } from "@/consts/environment";
 import { useUserStore } from '@/stores/userStore'; // Adjust the path as necessary
 import { AxiosError } from 'axios';
 
-const baseURL = PROD ? "https://home-service-api-ts.vercel.app/api/: "http://localhost:5001/api/";
+const baseURL = PROD ? "https://home-service-api-ts.vercel.app/api/" : "http://localhost:5001/api/";
 
 // Create an axios instance
 const axiosInstance = axios.create({
