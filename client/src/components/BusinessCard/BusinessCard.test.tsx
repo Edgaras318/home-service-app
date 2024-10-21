@@ -3,10 +3,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import BusinessCard from './BusinessCard';
 import { Business } from '@/types/businesses';
+import { Category} from "@/types";
 import { useUserStore } from "@/stores/userStore";
 
 // Mock Business data
-const mockCategory = {
+const mockCategory: Category = {
     _id: 'category1',
     iconUrl: 'test-icon-url.jpg',
     name: 'Test Category',
